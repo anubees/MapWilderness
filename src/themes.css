@@ -1,0 +1,33 @@
+/* Theme preview overrides — tokens are applied via theme-switcher.ts */
+
+/* Light themes: soften hard-coded dark overlays in a few shared spots. */
+[data-theme-mode='light'] .carousel-card-art::after {
+  background: linear-gradient(180deg, transparent 35%, color-mix(in srgb, var(--bg) 82%, transparent));
+}
+
+[data-theme-mode='light'] .carousel-card-play {
+  background: color-mix(in srgb, var(--accent) 92%, white);
+  color: var(--on-accent);
+}
+
+[data-theme-mode='light'] .offline-badge {
+  background: color-mix(in srgb, var(--warning) 18%, var(--panel));
+  border-color: color-mix(in srgb, var(--warning) 40%, transparent);
+}
+
+@media (max-width: 640px) {
+  .theme-toggle-btn {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.68rem;
+  }
+
+  .theme-toggle-btn::before {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .theme-toggle-btn {
+    margin-left: auto;
+  }
+}

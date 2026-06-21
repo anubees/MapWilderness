@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="description" content="Map Wilderness — curated hiking videos on an interactive map. Watch in-app, fullscreen, offline-ready.">
+
+    <meta name="theme-color" content="#061318">
+
+    <meta name="color-scheme" content="dark">
+
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>Map Wilderness</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="assets/icons/icon-192.png" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="themes.css">
+    <script>
+      // Apply saved preview theme before first paint to avoid a flash of the default palette.
+      try {
+        var t = localStorage.getItem('mapwilderness-preview-theme') || localStorage.getItem('wilderness-preview-theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+
+</head>
+
+<body>
+
+    <header class="app-header" id="app-header">
+        <div class="app-header-inner">
+            <a class="brand" href="#" aria-label="Map Wilderness home">
+                <img class="brand-mark" src="assets/icons/favicon.svg" alt="" aria-hidden="true" width="40" height="40">
+                <span class="brand-name">Map Wilderness</span>
+            </a>
+            <p class="header-tagline">Discover wilderness on the map · watch in-app</p>
+            <button type="button" id="themeToggle" class="theme-toggle-btn" aria-label="Cycle preview theme">
+                Forest Night · 1/30
+            </button>
+        </div>
+    </header>
+
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script src="app.js" type="module" defer></script>
+
+</body>
+
+</html>
+

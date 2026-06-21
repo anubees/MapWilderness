@@ -1,0 +1,25 @@
+{
+  "name": "Map Wilderness",
+  "short_name": "Map Wilderness",
+  "description": "Curated wilderness hiking videos on an interactive map — watch in-app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#061318",
+  "theme_color": "#061318",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "entertainment"]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "mapwilderness",
+  "version": "1.0.0",
+  "description": "MapWilderness — curated wilderness videos on an interactive map",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js --watch",
+    "serve": "npx http-server dist -p 8000 -c-1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.0",
+    "typescript": "^5.3.0"
+  }
+}

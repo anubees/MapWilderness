@@ -1,0 +1,1806 @@
+[
+  {
+    "id": "nc-001",
+    "title": "Looking Glass Rock — POV Hiking",
+    "creator": "Explore Travels",
+    "youtubeId": "WWT5Ii2WSsA",
+    "duration": "38 min",
+    "difficulty": "Moderate",
+    "distance": "6.5 miles",
+    "tags": [
+      "hiking",
+      "looking glass",
+      "pisgah",
+      "granite dome"
+    ],
+    "lat": 35.302,
+    "lng": -82.768,
+    "stateCode": "NC",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nc-002",
+    "title": "Linville Gorge Wilderness Backpacking",
+    "creator": "Explore Travels",
+    "youtubeId": "QvHtnKkFimY",
+    "duration": "55 min",
+    "difficulty": "Hard",
+    "distance": "7.2 miles",
+    "tags": [
+      "backpacking",
+      "linville gorge",
+      "wilderness",
+      "scrambling"
+    ],
+    "lat": 35.918,
+    "lng": -81.931,
+    "stateCode": "NC",
+    "categories": [
+      "canyons",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nc-003",
+    "title": "Max Patch Bald — Appalachian Trail Day 30",
+    "creator": "Backpacking Adventures",
+    "youtubeId": "vggVbCsq8K8",
+    "duration": "28 min",
+    "difficulty": "Easy",
+    "distance": "1.5 miles",
+    "tags": [
+      "hiking",
+      "max patch",
+      "AT",
+      "balds",
+      "360 views"
+    ],
+    "lat": 35.797,
+    "lng": -82.956,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "nc-004",
+    "title": "Mount Mitchell to Celo Knob — Black Mountain Crest",
+    "creator": "Mountain High Hikes",
+    "youtubeId": "Fp_2wsmW2Ck",
+    "duration": "62 min",
+    "difficulty": "Hard",
+    "distance": "12 miles",
+    "tags": [
+      "hiking",
+      "mount mitchell",
+      "black mountains",
+      "summit"
+    ],
+    "lat": 35.765,
+    "lng": -82.265,
+    "stateCode": "NC",
+    "categories": [
+      "mountains"
+    ]
+  },
+  {
+    "id": "nc-005",
+    "title": "Art Loeb Trail End to End — 30 Miles",
+    "creator": "Trail Tales",
+    "youtubeId": "SJ8UoVVqNiw",
+    "duration": "90 min",
+    "difficulty": "Hard",
+    "distance": "30 miles",
+    "tags": [
+      "backpacking",
+      "art loeb",
+      "cold mountain",
+      "shining rock"
+    ],
+    "lat": 35.361,
+    "lng": -82.849,
+    "stateCode": "NC",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nc-006",
+    "title": "Hump Mountain — Roan Highlands AT",
+    "creator": "Roan Mountain Hiker",
+    "youtubeId": "gwEFpeWelks",
+    "duration": "46 min",
+    "difficulty": "Moderate",
+    "distance": "5 miles",
+    "tags": [
+      "hiking",
+      "AT",
+      "roan mountain",
+      "balds",
+      "views"
+    ],
+    "lat": 36.136,
+    "lng": -82.055,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "nc-007",
+    "title": "Joyce Kilmer Memorial Forest Old Growth",
+    "creator": "Wander the Woods",
+    "youtubeId": "2U8mCuxXxdY",
+    "duration": "25 min",
+    "difficulty": "Easy",
+    "distance": "2 miles",
+    "tags": [
+      "hiking",
+      "old growth",
+      "joyce kilmer",
+      "hemlock"
+    ],
+    "lat": 35.369,
+    "lng": -83.936,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nc-008",
+    "title": "Douglas Falls — Pisgah National Forest",
+    "creator": "Trail Wanderer",
+    "youtubeId": "sjKHyDezhCk",
+    "duration": "48 min",
+    "difficulty": "Moderate",
+    "distance": "7 miles",
+    "tags": [
+      "hiking",
+      "waterfall",
+      "douglas falls",
+      "blue ridge parkway"
+    ],
+    "lat": 35.812,
+    "lng": -82.401,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nc-009",
+    "title": "Toms Creek Falls — Linville Area",
+    "creator": "Never Grow Bored",
+    "youtubeId": "w10_bs94YN4",
+    "duration": "22 min",
+    "difficulty": "Easy",
+    "distance": "0.5 miles",
+    "tags": [
+      "hiking",
+      "waterfall",
+      "toms creek",
+      "marion"
+    ],
+    "lat": 35.748,
+    "lng": -82.023,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nc-010",
+    "title": "Black Balsam Knob & Tennent Mountain",
+    "creator": "High Country Hikers",
+    "youtubeId": "H9KmEu1yDWQ",
+    "duration": "52 min",
+    "difficulty": "Moderate",
+    "distance": "5.1 miles",
+    "tags": [
+      "hiking",
+      "black balsam",
+      "art loeb",
+      "360 views"
+    ],
+    "lat": 35.327,
+    "lng": -82.874,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ],
+    "placeId": "black-balsam",
+    "placeName": "Black Balsam Knob"
+  },
+  {
+    "id": "nc-011",
+    "title": "Laurel Falls — Great Smoky Mountains",
+    "creator": "Adventures With The Cohns",
+    "youtubeId": "UMI6s1RJzWE",
+    "duration": "32 min",
+    "difficulty": "Easy",
+    "distance": "2.6 miles",
+    "tags": [
+      "hiking",
+      "waterfall",
+      "laurel falls",
+      "smokies"
+    ],
+    "lat": 35.654,
+    "lng": -83.591,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nc-012",
+    "title": "Grotto Falls — Trillium Gap Trail",
+    "creator": "Family Trail Time",
+    "youtubeId": "2GqYZsCtJhY",
+    "duration": "35 min",
+    "difficulty": "Moderate",
+    "distance": "3 miles",
+    "tags": [
+      "hiking",
+      "waterfall",
+      "grotto falls",
+      "smokies"
+    ],
+    "lat": 35.678,
+    "lng": -83.453,
+    "stateCode": "NC",
+    "categories": [
+      "caves",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nc-013",
+    "title": "Top Stops in Great Smoky Mountains",
+    "creator": "Wandering Out Yonder",
+    "youtubeId": "N8vxBwBM0j4",
+    "duration": "45 min",
+    "difficulty": "Easy",
+    "distance": "Varies",
+    "tags": [
+      "hiking",
+      "clingmans dome",
+      "smokies",
+      "cades cove"
+    ],
+    "lat": 35.563,
+    "lng": -83.498,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "nc-014",
+    "title": "Black Balsam Knob Day Hike — Art Loeb Spur",
+    "creator": "Mike Hikes NC",
+    "youtubeId": "twaKVy8c1zg",
+    "duration": "40 min",
+    "difficulty": "Moderate",
+    "distance": "4.5 miles",
+    "tags": [
+      "hiking",
+      "black balsam",
+      "pisgah",
+      "balds"
+    ],
+    "lat": 35.329,
+    "lng": -82.876,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ],
+    "placeId": "black-balsam",
+    "placeName": "Black Balsam Knob"
+  },
+  {
+    "id": "nc-015",
+    "title": "Roan Highlands — Carvers Gap AT Section",
+    "creator": "Birthday Girl Hikes",
+    "youtubeId": "pzvsLfv9aHs",
+    "duration": "48 min",
+    "difficulty": "Moderate",
+    "distance": "5 miles",
+    "tags": [
+      "hiking",
+      "roan mountain",
+      "grassy ridge",
+      "AT",
+      "balds"
+    ],
+    "lat": 36.109,
+    "lng": -82.111,
+    "stateCode": "NC",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "app-001",
+    "title": "Grayson Highlands — Wild Ponies Backpacking",
+    "creator": "Tramily Adventures",
+    "youtubeId": "yiywLkdAj3A",
+    "duration": "48 min",
+    "difficulty": "Moderate",
+    "distance": "6 miles",
+    "tags": [
+      "backpacking",
+      "grayson highlands",
+      "wild ponies",
+      "virginia"
+    ],
+    "lat": 36.635,
+    "lng": -81.508,
+    "stateCode": "VA",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "app-002",
+    "title": "Alum Cave Trail to Mount LeConte",
+    "creator": "Smoky Mountain Hikers",
+    "youtubeId": "-Kqm6igflK8",
+    "duration": "72 min",
+    "difficulty": "Hard",
+    "distance": "11 miles",
+    "tags": [
+      "hiking",
+      "smokies",
+      "mount leconte",
+      "alum cave"
+    ],
+    "lat": 35.629,
+    "lng": -83.387,
+    "stateCode": "TN",
+    "categories": [
+      "caves",
+      "mountains"
+    ],
+    "placeId": "mount-leconte",
+    "placeName": "Mount LeConte"
+  },
+  {
+    "id": "app-003",
+    "title": "How to Hike Mount LeConte — Complete Guide",
+    "creator": "Smokies Trail Guide",
+    "youtubeId": "23y3Y20t_YQ",
+    "duration": "18 min",
+    "difficulty": "Hard",
+    "distance": "11 miles",
+    "tags": [
+      "hiking",
+      "smokies",
+      "mount leconte",
+      "guide"
+    ],
+    "lat": 35.631,
+    "lng": -83.385,
+    "stateCode": "TN",
+    "categories": [
+      "caves",
+      "mountains"
+    ],
+    "placeId": "mount-leconte",
+    "placeName": "Mount LeConte"
+  },
+  {
+    "id": "app-004",
+    "title": "Charlies Bunion — Fall Colors on the AT",
+    "creator": "An Adventure with Nick & Rachel",
+    "youtubeId": "UwivFIhQJk8",
+    "duration": "55 min",
+    "difficulty": "Moderate",
+    "distance": "8 miles",
+    "tags": [
+      "hiking",
+      "charlies bunion",
+      "smokies",
+      "AT"
+    ],
+    "lat": 35.586,
+    "lng": -83.31,
+    "stateCode": "TN",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "app-005",
+    "title": "Ramsey Cascades — Tallest Smokies Waterfall",
+    "creator": "An Adventure with Nick & Rachel",
+    "youtubeId": "ooYKeQ7gX7M",
+    "duration": "60 min",
+    "difficulty": "Hard",
+    "distance": "8 miles",
+    "tags": [
+      "hiking",
+      "waterfall",
+      "ramsey cascades",
+      "smokies"
+    ],
+    "lat": 35.757,
+    "lng": -83.353,
+    "stateCode": "TN",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "app-006",
+    "title": "Old Rag Mountain — Shenandoah Rock Scramble",
+    "creator": "Adventures of A+K",
+    "youtubeId": "1_gfM_HQCe4",
+    "duration": "65 min",
+    "difficulty": "Hard",
+    "distance": "9.2 miles",
+    "tags": [
+      "hiking",
+      "old rag",
+      "scrambling",
+      "shenandoah"
+    ],
+    "lat": 38.552,
+    "lng": -78.314,
+    "stateCode": "VA",
+    "categories": [
+      "mountains"
+    ]
+  },
+  {
+    "id": "app-007",
+    "title": "Seneca Rocks Overlook Trail",
+    "creator": "ALICE IN USA",
+    "youtubeId": "f_KytajPGKw",
+    "duration": "45 min",
+    "difficulty": "Hard",
+    "distance": "3.5 miles",
+    "tags": [
+      "hiking",
+      "seneca rocks",
+      "west virginia",
+      "monongahela"
+    ],
+    "lat": 38.834,
+    "lng": -79.376,
+    "stateCode": "WV",
+    "categories": [
+      "mountains",
+      "red-rock"
+    ]
+  },
+  {
+    "id": "app-008",
+    "title": "McAfee Knob — Appalachian Trail Day 66",
+    "creator": "Homemade Wanderlust",
+    "youtubeId": "uLjjfWQRYgY",
+    "duration": "52 min",
+    "difficulty": "Moderate",
+    "distance": "8.8 miles",
+    "tags": [
+      "hiking",
+      "AT",
+      "mcafee knob",
+      "virginia"
+    ],
+    "lat": 37.363,
+    "lng": -80.013,
+    "stateCode": "VA",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ],
+    "placeId": "mcafee-knob",
+    "placeName": "McAfee Knob"
+  },
+  {
+    "id": "app-009",
+    "title": "Dolly Sods Wilderness — Classic Loop",
+    "creator": "Nature Adventure Discovery",
+    "youtubeId": "GP9TH4DxsQY",
+    "duration": "70 min",
+    "difficulty": "Moderate",
+    "distance": "24 miles",
+    "tags": [
+      "backpacking",
+      "dolly sods",
+      "west virginia",
+      "wilderness"
+    ],
+    "lat": 38.975,
+    "lng": -79.333,
+    "stateCode": "WV",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "app-010",
+    "title": "Red River Gorge Loop — Gray's Arch & Hanson's Point",
+    "creator": "Wandering Out Yonder",
+    "youtubeId": "Zp6Uv4OSwTo",
+    "duration": "75 min",
+    "difficulty": "Hard",
+    "distance": "12.2 miles",
+    "tags": [
+      "hiking",
+      "red river gorge",
+      "arches",
+      "kentucky"
+    ],
+    "lat": 37.828,
+    "lng": -83.624,
+    "stateCode": "KY",
+    "categories": [
+      "red-rock",
+      "canyons",
+      "caves"
+    ],
+    "placeId": "red-river-gorge",
+    "placeName": "Red River Gorge"
+  },
+  {
+    "id": "app-011",
+    "title": "Alum Cave to Mount LeConte — Smokies Vlog",
+    "creator": "Smoky Mountain Explorers",
+    "youtubeId": "n3HxZwrDuCk",
+    "duration": "58 min",
+    "difficulty": "Hard",
+    "distance": "11 miles",
+    "tags": [
+      "hiking",
+      "smokies",
+      "mount leconte",
+      "waterfall"
+    ],
+    "lat": 35.627,
+    "lng": -83.389,
+    "stateCode": "TN",
+    "categories": [
+      "caves",
+      "mountains"
+    ],
+    "placeId": "mount-leconte",
+    "placeName": "Mount LeConte"
+  },
+  {
+    "id": "app-012",
+    "title": "McAfee Knob Spring Hike on the AT",
+    "creator": "Roam RoCo",
+    "youtubeId": "NqQbYf4YM08",
+    "duration": "42 min",
+    "difficulty": "Moderate",
+    "distance": "8.8 miles",
+    "tags": [
+      "hiking",
+      "AT",
+      "mcafee knob",
+      "roanoke"
+    ],
+    "lat": 37.365,
+    "lng": -80.011,
+    "stateCode": "VA",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ],
+    "placeId": "mcafee-knob",
+    "placeName": "McAfee Knob"
+  },
+  {
+    "id": "app-013",
+    "title": "Breaks Interstate Park — Grand Canyon of the South",
+    "creator": "Breaks Interstate Park",
+    "youtubeId": "2vvUyixs3SQ",
+    "duration": "33 min",
+    "difficulty": "Moderate",
+    "distance": "3 miles",
+    "tags": [
+      "hiking",
+      "breaks park",
+      "virginia",
+      "kentucky",
+      "canyon"
+    ],
+    "lat": 37.278,
+    "lng": -82.292,
+    "stateCode": "VA",
+    "categories": [
+      "canyons"
+    ]
+  },
+  {
+    "id": "app-014",
+    "title": "Twin Arches Loop — Big South Fork",
+    "creator": "Backcountry Bob",
+    "youtubeId": "oY5JwdozcqI",
+    "duration": "50 min",
+    "difficulty": "Moderate",
+    "distance": "4.6 miles",
+    "tags": [
+      "hiking",
+      "big south fork",
+      "arches",
+      "tennessee"
+    ],
+    "lat": 36.482,
+    "lng": -84.698,
+    "stateCode": "TN",
+    "categories": [
+      "red-rock",
+      "caves"
+    ]
+  },
+  {
+    "id": "app-015",
+    "title": "Red River Gorge Scenic Byway & Hiking",
+    "creator": "Wandering Out Yonder",
+    "youtubeId": "dXkFfM-atTA",
+    "duration": "40 min",
+    "difficulty": "Moderate",
+    "distance": "Varies",
+    "tags": [
+      "hiking",
+      "red river gorge",
+      "kentucky",
+      "daniel boone"
+    ],
+    "lat": 37.83,
+    "lng": -83.622,
+    "stateCode": "KY",
+    "categories": [
+      "red-rock",
+      "canyons"
+    ],
+    "placeId": "red-river-gorge",
+    "placeName": "Red River Gorge"
+  },
+  {
+    "id": "sw-001",
+    "title": "Angels Landing — Zion National Park",
+    "creator": "Geoffrey Morrison",
+    "youtubeId": "LYOPFiMVhGw",
+    "duration": "55 min",
+    "difficulty": "Hard",
+    "distance": "5.4 miles",
+    "tags": [
+      "hiking",
+      "zion",
+      "angels landing",
+      "exposure"
+    ],
+    "lat": 37.269,
+    "lng": -112.948,
+    "stateCode": "UT",
+    "categories": [
+      "canyons",
+      "red-rock",
+      "mountains"
+    ]
+  },
+  {
+    "id": "sw-002",
+    "title": "Half Dome Day Hike — Yosemite Cables Route",
+    "creator": "Molly Rose Outdoors",
+    "youtubeId": "lM_3KGMzvOw",
+    "duration": "90 min",
+    "difficulty": "Hard",
+    "distance": "16 miles",
+    "tags": [
+      "hiking",
+      "half dome",
+      "yosemite",
+      "cables"
+    ],
+    "lat": 37.746,
+    "lng": -119.533,
+    "stateCode": "CA",
+    "categories": [
+      "mountains",
+      "canyons"
+    ]
+  },
+  {
+    "id": "sw-003",
+    "title": "Havasu Falls — 10-Mile Backpack Into the Canyon",
+    "creator": "Desert Trail Films",
+    "youtubeId": "pbUwR4UsBos",
+    "duration": "85 min",
+    "difficulty": "Hard",
+    "distance": "20 miles",
+    "tags": [
+      "backpacking",
+      "havasu falls",
+      "arizona",
+      "waterfall"
+    ],
+    "lat": 36.255,
+    "lng": -112.699,
+    "stateCode": "AZ",
+    "categories": [
+      "desert",
+      "canyons"
+    ]
+  },
+  {
+    "id": "sw-004",
+    "title": "The Wave — Coyote Buttes Permit Hike",
+    "creator": "Adventure Couple",
+    "youtubeId": "Ttoj8Z-l_cc",
+    "duration": "40 min",
+    "difficulty": "Moderate",
+    "distance": "6 miles",
+    "tags": [
+      "hiking",
+      "the wave",
+      "arizona",
+      "sandstone"
+    ],
+    "lat": 36.995,
+    "lng": -112.006,
+    "stateCode": "AZ",
+    "categories": [
+      "desert",
+      "red-rock"
+    ]
+  },
+  {
+    "id": "sw-005",
+    "title": "Grand Canyon Rim to River — Bright Angel Trail",
+    "creator": "Nomads With A Purpose",
+    "youtubeId": "jF47MX697F8",
+    "duration": "95 min",
+    "difficulty": "Hard",
+    "distance": "17 miles",
+    "tags": [
+      "hiking",
+      "grand canyon",
+      "bright angel",
+      "rim to river"
+    ],
+    "lat": 36.057,
+    "lng": -112.143,
+    "stateCode": "AZ",
+    "categories": [
+      "canyons",
+      "desert"
+    ]
+  },
+  {
+    "id": "sw-006",
+    "title": "Delicate Arch Full Hike — Arches National Park",
+    "creator": "Utah Trail Seekers",
+    "youtubeId": "ijbIVfV9OXw",
+    "duration": "30 min",
+    "difficulty": "Moderate",
+    "distance": "3 miles",
+    "tags": [
+      "hiking",
+      "delicate arch",
+      "arches",
+      "utah"
+    ],
+    "lat": 38.744,
+    "lng": -109.499,
+    "stateCode": "UT",
+    "categories": [
+      "red-rock",
+      "desert"
+    ]
+  },
+  {
+    "id": "sw-007",
+    "title": "Bryce Canyon — Navajo Loop & Queen's Garden",
+    "creator": "Winter Trail Notes",
+    "youtubeId": "-AU83nSF3IE",
+    "duration": "35 min",
+    "difficulty": "Moderate",
+    "distance": "3 miles",
+    "tags": [
+      "hiking",
+      "bryce canyon",
+      "hoodoos",
+      "navajo loop"
+    ],
+    "lat": 37.593,
+    "lng": -112.187,
+    "stateCode": "UT",
+    "categories": [
+      "red-rock",
+      "canyons"
+    ]
+  },
+  {
+    "id": "sw-008",
+    "title": "Monument Valley Wildcat Trail",
+    "creator": "Annie Ouellet",
+    "youtubeId": "UlXZX1bWRTg",
+    "duration": "38 min",
+    "difficulty": "Easy",
+    "distance": "3.2 miles",
+    "tags": [
+      "hiking",
+      "monument valley",
+      "arizona",
+      "buttes"
+    ],
+    "lat": 36.983,
+    "lng": -110.111,
+    "stateCode": "AZ",
+    "categories": [
+      "desert",
+      "red-rock"
+    ]
+  },
+  {
+    "id": "sw-009",
+    "title": "Humboldt Peak — Colorado 14er Winter Summit",
+    "creator": "Andy Schlichting",
+    "youtubeId": "AEkqDbIqqZ0",
+    "duration": "58 min",
+    "difficulty": "Hard",
+    "distance": "11 miles",
+    "tags": [
+      "mountaineering",
+      "14er",
+      "colorado",
+      "sangre de cristo"
+    ],
+    "lat": 37.987,
+    "lng": -105.132,
+    "stateCode": "CO",
+    "categories": [
+      "mountains"
+    ]
+  },
+  {
+    "id": "sw-010",
+    "title": "Mesa Arch Sunrise — Canyonlands Island in the Sky",
+    "creator": "Utah Desert Views",
+    "youtubeId": "9UU0Mg8tAXU",
+    "duration": "22 min",
+    "difficulty": "Easy",
+    "distance": "0.5 miles",
+    "tags": [
+      "hiking",
+      "mesa arch",
+      "canyonlands",
+      "sunrise"
+    ],
+    "lat": 38.387,
+    "lng": -109.867,
+    "stateCode": "UT",
+    "categories": [
+      "desert",
+      "red-rock"
+    ]
+  },
+  {
+    "id": "me-001",
+    "title": "Acadia Beehive Trail — Cliffside Loop",
+    "creator": "Explore Travels",
+    "youtubeId": "zpKLlU0ThwM",
+    "duration": "45 min",
+    "difficulty": "Hard",
+    "distance": "1.5 miles",
+    "tags": [
+      "hiking",
+      "acadia",
+      "beehive",
+      "maine",
+      "ocean views"
+    ],
+    "lat": 44.33,
+    "lng": -68.188,
+    "stateCode": "ME",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ],
+    "placeId": "acadia-beehive",
+    "placeName": "Acadia Beehive"
+  },
+  {
+    "id": "nh-001",
+    "title": "Franconia Ridge Loop — White Mountains",
+    "creator": "Mountain High Hikes",
+    "youtubeId": "RoYwgwRqXwM",
+    "duration": "52 min",
+    "difficulty": "Hard",
+    "distance": "8.5 miles",
+    "tags": [
+      "hiking",
+      "franconia ridge",
+      "white mountains",
+      "appalachian trail"
+    ],
+    "lat": 44.148,
+    "lng": -71.644,
+    "stateCode": "NH",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "ny-001",
+    "title": "Breakneck Ridge — Hudson Highlands Scramble",
+    "creator": "Wandering Out Yonder",
+    "youtubeId": "tUmA1SCBykw",
+    "duration": "48 min",
+    "difficulty": "Hard",
+    "distance": "5.5 miles",
+    "tags": [
+      "hiking",
+      "breakneck ridge",
+      "hudson highlands",
+      "scrambling"
+    ],
+    "lat": 41.444,
+    "lng": -73.975,
+    "stateCode": "NY",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "pa-001",
+    "title": "Ricketts Glen Falls Trail — 21 Waterfalls",
+    "creator": "Trail Wanderer",
+    "youtubeId": "OYGYjE-Sf1c",
+    "duration": "55 min",
+    "difficulty": "Hard",
+    "distance": "7 miles",
+    "tags": [
+      "hiking",
+      "waterfall",
+      "ricketts glen",
+      "pennsylvania"
+    ],
+    "lat": 41.321,
+    "lng": -76.272,
+    "stateCode": "PA",
+    "categories": [
+      "lush-green",
+      "caves"
+    ]
+  },
+  {
+    "id": "ga-001",
+    "title": "Blood Mountain — Georgia AT Summit",
+    "creator": "Homemade Wanderlust",
+    "youtubeId": "UPojID9NuSs",
+    "duration": "42 min",
+    "difficulty": "Hard",
+    "distance": "4.3 miles",
+    "tags": [
+      "hiking",
+      "blood mountain",
+      "appalachian trail",
+      "georgia"
+    ],
+    "lat": 34.74,
+    "lng": -83.937,
+    "stateCode": "GA",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "sc-001",
+    "title": "Table Rock Mountain — Blue Ridge Summit",
+    "creator": "Build the Dream",
+    "youtubeId": "Kxd3m_SB6F0",
+    "duration": "50 min",
+    "difficulty": "Hard",
+    "distance": "7 miles",
+    "tags": [
+      "hiking",
+      "table rock",
+      "blue ridge",
+      "waterfall"
+    ],
+    "lat": 35.024,
+    "lng": -82.697,
+    "stateCode": "SC",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "fl-001",
+    "title": "Everglades Anhinga Trail — Wildlife Boardwalk",
+    "creator": "Sloan's Wilderness Expeditions",
+    "youtubeId": "aAQvqmSvJMM",
+    "duration": "28 min",
+    "difficulty": "Easy",
+    "distance": "0.8 miles",
+    "tags": [
+      "hiking",
+      "everglades",
+      "wildlife",
+      "wetlands"
+    ],
+    "lat": 25.384,
+    "lng": -80.597,
+    "stateCode": "FL",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "tx-001",
+    "title": "Big Bend South Rim Loop — Chisos Mountains",
+    "creator": "Desert Trail Films",
+    "youtubeId": "7enK2R3P5UE",
+    "duration": "85 min",
+    "difficulty": "Hard",
+    "distance": "12.5 miles",
+    "tags": [
+      "backpacking",
+      "big bend",
+      "south rim",
+      "desert"
+    ],
+    "lat": 29.226,
+    "lng": -103.303,
+    "stateCode": "TX",
+    "categories": [
+      "desert",
+      "mountains",
+      "canyons"
+    ]
+  },
+  {
+    "id": "wy-001",
+    "title": "Cascade Canyon — Grand Teton Jenny Lake",
+    "creator": "Geoffrey Morrison",
+    "youtubeId": "JaD8jk_odoA",
+    "duration": "58 min",
+    "difficulty": "Moderate",
+    "distance": "9.4 miles",
+    "tags": [
+      "hiking",
+      "grand teton",
+      "cascade canyon",
+      "wildlife"
+    ],
+    "lat": 43.761,
+    "lng": -110.723,
+    "stateCode": "WY",
+    "categories": [
+      "mountains",
+      "canyons"
+    ]
+  },
+  {
+    "id": "mt-001",
+    "title": "Glacier Highline Trail — Garden Wall",
+    "creator": "Andy Schlichting",
+    "youtubeId": "YsSl2Ugdk1E",
+    "duration": "72 min",
+    "difficulty": "Moderate",
+    "distance": "12 miles",
+    "tags": [
+      "hiking",
+      "glacier",
+      "highline trail",
+      "wildflowers"
+    ],
+    "lat": 48.696,
+    "lng": -113.717,
+    "stateCode": "MT",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "wa-001",
+    "title": "Mount Rainier Skyline Loop — Paradise",
+    "creator": "Molly Rose Outdoors",
+    "youtubeId": "yg4t6qvfk7o",
+    "duration": "45 min",
+    "difficulty": "Moderate",
+    "distance": "5.5 miles",
+    "tags": [
+      "hiking",
+      "mount rainier",
+      "skyline trail",
+      "wildflowers"
+    ],
+    "lat": 46.786,
+    "lng": -121.735,
+    "stateCode": "WA",
+    "categories": [
+      "mountains"
+    ]
+  },
+  {
+    "id": "or-001",
+    "title": "Mount Scott — Crater Lake Summit",
+    "creator": "Andy Neal",
+    "youtubeId": "CTb3QRmJB2w",
+    "duration": "40 min",
+    "difficulty": "Moderate",
+    "distance": "5 miles",
+    "tags": [
+      "hiking",
+      "crater lake",
+      "mount scott",
+      "oregon"
+    ],
+    "lat": 42.922,
+    "lng": -122.016,
+    "stateCode": "OR",
+    "categories": [
+      "mountains",
+      "canyons"
+    ]
+  },
+  {
+    "id": "nm-001",
+    "title": "Kasha-Katuwe Tent Rocks — Slot Canyon",
+    "creator": "Utah Trail Seekers",
+    "youtubeId": "lPQX2NEMnKI",
+    "duration": "35 min",
+    "difficulty": "Moderate",
+    "distance": "3 miles",
+    "tags": [
+      "hiking",
+      "tent rocks",
+      "slot canyon",
+      "hoodoos"
+    ],
+    "lat": 35.661,
+    "lng": -106.408,
+    "stateCode": "NM",
+    "categories": [
+      "desert",
+      "red-rock",
+      "caves"
+    ]
+  },
+  {
+    "id": "id-001",
+    "title": "Sawtooth Lake — Stanley Alpine Hike",
+    "creator": "Wonder Mich",
+    "youtubeId": "CSF57bdi6gc",
+    "duration": "65 min",
+    "difficulty": "Hard",
+    "distance": "10 miles",
+    "tags": [
+      "hiking",
+      "sawtooth",
+      "alpine lake",
+      "idaho"
+    ],
+    "lat": 44.088,
+    "lng": -114.961,
+    "stateCode": "ID",
+    "categories": [
+      "mountains"
+    ]
+  },
+  {
+    "id": "hi-001",
+    "title": "Kalalau Trail — Nā Pali Coast",
+    "creator": "Adventure Couple",
+    "youtubeId": "XcZaaYLme6A",
+    "duration": "90 min",
+    "difficulty": "Hard",
+    "distance": "22 miles",
+    "tags": [
+      "backpacking",
+      "kalalau",
+      "napali coast",
+      "hawaii"
+    ],
+    "lat": 22.17,
+    "lng": -159.653,
+    "stateCode": "HI",
+    "categories": [
+      "lush-green",
+      "canyons"
+    ]
+  },
+  {
+    "id": "ak-001",
+    "title": "Harding Icefield Trail — Exit Glacier",
+    "creator": "Tim & Shannon Living The Dream",
+    "youtubeId": "9FfJZnUlfsY",
+    "duration": "75 min",
+    "difficulty": "Hard",
+    "distance": "8.2 miles",
+    "tags": [
+      "hiking",
+      "harding icefield",
+      "exit glacier",
+      "alaska"
+    ],
+    "lat": 60.178,
+    "lng": -149.926,
+    "stateCode": "AK",
+    "categories": [
+      "mountains"
+    ]
+  },
+  {
+    "id": "mn-001",
+    "title": "Superior Hiking Trail — North Shore",
+    "creator": "Backpacking Adventures",
+    "youtubeId": "I-KL7ZA_dqE",
+    "duration": "48 min",
+    "difficulty": "Moderate",
+    "distance": "8 miles",
+    "tags": [
+      "hiking",
+      "superior hiking trail",
+      "lake superior",
+      "minnesota"
+    ],
+    "lat": 47.75,
+    "lng": -90.34,
+    "stateCode": "MN",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "mi-001",
+    "title": "Pictured Rocks Chapel Loop — Lake Superior",
+    "creator": "Wandering Out Yonder",
+    "youtubeId": "t0Jq7RsvTgg",
+    "duration": "70 min",
+    "difficulty": "Moderate",
+    "distance": "12 miles",
+    "tags": [
+      "hiking",
+      "pictured rocks",
+      "lake superior",
+      "cliffs"
+    ],
+    "lat": 46.667,
+    "lng": -86.017,
+    "stateCode": "MI",
+    "categories": [
+      "lush-green",
+      "canyons"
+    ]
+  },
+  {
+    "id": "wi-001",
+    "title": "Devil's Lake East Bluff — Wisconsin Dells",
+    "creator": "High Country Hikers",
+    "youtubeId": "oKXVwIEi6ac",
+    "duration": "38 min",
+    "difficulty": "Moderate",
+    "distance": "4 miles",
+    "tags": [
+      "hiking",
+      "devils lake",
+      "wisconsin",
+      "bluff"
+    ],
+    "lat": 43.422,
+    "lng": -89.73,
+    "stateCode": "WI",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "mo-001",
+    "title": "Taum Sauk Mountain — Mina Sauk Falls Loop",
+    "creator": "Ozark Trail Association",
+    "youtubeId": "4PTJhfLyD7w",
+    "duration": "55 min",
+    "difficulty": "Moderate",
+    "distance": "3 miles",
+    "tags": [
+      "hiking",
+      "taum sauk",
+      "ozarks",
+      "waterfall"
+    ],
+    "lat": 37.571,
+    "lng": -90.722,
+    "stateCode": "MO",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "ar-001",
+    "title": "Whitaker Point — Hawksbill Crag",
+    "creator": "George and Cris",
+    "youtubeId": "CC628pJPLSI",
+    "duration": "32 min",
+    "difficulty": "Moderate",
+    "distance": "2.7 miles",
+    "tags": [
+      "hiking",
+      "hawksbill crag",
+      "ozarks",
+      "arkansas"
+    ],
+    "lat": 36.079,
+    "lng": -93.387,
+    "stateCode": "AR",
+    "categories": [
+      "lush-green",
+      "mountains"
+    ]
+  },
+  {
+    "id": "nv-001",
+    "title": "Calico Tanks Trail — Red Rock Canyon",
+    "creator": "Utah Desert Views",
+    "youtubeId": "fc8BXruJN08",
+    "duration": "30 min",
+    "difficulty": "Moderate",
+    "distance": "2.4 miles",
+    "tags": [
+      "hiking",
+      "red rock canyon",
+      "calico tanks",
+      "nevada"
+    ],
+    "lat": 36.159,
+    "lng": -115.433,
+    "stateCode": "NV",
+    "categories": [
+      "red-rock",
+      "desert"
+    ]
+  },
+  {
+    "id": "sd-001",
+    "title": "Badlands Notch Trail — Ladder Climb",
+    "creator": "Nomads With A Purpose",
+    "youtubeId": "1sLlzgVYYpw",
+    "duration": "25 min",
+    "difficulty": "Moderate",
+    "distance": "1.5 miles",
+    "tags": [
+      "hiking",
+      "badlands",
+      "notch trail",
+      "hoodoos"
+    ],
+    "lat": 43.759,
+    "lng": -101.917,
+    "stateCode": "SD",
+    "categories": [
+      "desert",
+      "canyons"
+    ]
+  },
+  {
+    "id": "vt-001",
+    "title": "Mount Mansfield Summit — Long Trail",
+    "creator": "Birthday Girl Hikes",
+    "youtubeId": "86A8AICnvYI",
+    "duration": "60 min",
+    "difficulty": "Hard",
+    "distance": "7 miles",
+    "tags": [
+      "hiking",
+      "mount mansfield",
+      "long trail",
+      "vermont"
+    ],
+    "lat": 44.544,
+    "lng": -72.814,
+    "stateCode": "VT",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "al-001",
+    "title": "Cheaha Mountain — Bald Rock Overlook",
+    "creator": "Peak Bagger",
+    "youtubeId": "O0NtFYovlUo",
+    "duration": "35 min",
+    "difficulty": "Easy",
+    "distance": "1.5 miles",
+    "tags": [
+      "hiking",
+      "cheaha",
+      "talladega",
+      "alabama"
+    ],
+    "lat": 33.486,
+    "lng": -85.809,
+    "stateCode": "AL",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "ok-001",
+    "title": "Elk Mountain — Wichita Mountains",
+    "creator": "Visit Oklahoma",
+    "youtubeId": "J8ZFVlXtfgk",
+    "duration": "40 min",
+    "difficulty": "Moderate",
+    "distance": "2.2 miles",
+    "tags": [
+      "hiking",
+      "wichita mountains",
+      "elk mountain",
+      "oklahoma"
+    ],
+    "lat": 34.709,
+    "lng": -98.623,
+    "stateCode": "OK",
+    "categories": [
+      "mountains",
+      "red-rock"
+    ]
+  },
+  {
+    "id": "oh-001",
+    "title": "Old Man's Cave — Hocking Hills Gorge",
+    "creator": "Wander the Woods",
+    "youtubeId": "DAQqGgV-1bo",
+    "duration": "42 min",
+    "difficulty": "Moderate",
+    "distance": "1 mile",
+    "tags": [
+      "hiking",
+      "hocking hills",
+      "old mans cave",
+      "waterfall"
+    ],
+    "lat": 39.432,
+    "lng": -82.536,
+    "stateCode": "OH",
+    "categories": [
+      "lush-green",
+      "caves"
+    ]
+  },
+  {
+    "id": "in-001",
+    "title": "Indiana Dunes 3 Dune Challenge",
+    "creator": "Family Trail Time",
+    "youtubeId": "nxWHPWso45o",
+    "duration": "28 min",
+    "difficulty": "Moderate",
+    "distance": "1.5 miles",
+    "tags": [
+      "hiking",
+      "indiana dunes",
+      "sand dunes",
+      "lake michigan"
+    ],
+    "lat": 41.653,
+    "lng": -87.052,
+    "stateCode": "IN",
+    "categories": [
+      "desert",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "ct-001",
+    "title": "Bluff Point Coastal Preserve — Connecticut Shoreline",
+    "creator": "Trail Wanderer",
+    "youtubeId": "Bw9JBR0iRCQ",
+    "duration": "42 min",
+    "difficulty": "Moderate",
+    "distance": "3.5 miles",
+    "tags": [
+      "hiking",
+      "bluff point",
+      "connecticut",
+      "shoreline",
+      "long island sound"
+    ],
+    "lat": 41.321,
+    "lng": -72.046,
+    "stateCode": "CT",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "de-001",
+    "title": "Cape Henlopen State Park — Coastal Trails",
+    "creator": "Destination Delaware",
+    "youtubeId": "SJvHj3CbkB0",
+    "duration": "18 min",
+    "difficulty": "Easy",
+    "distance": "2.5 miles",
+    "tags": [
+      "hiking",
+      "cape henlopen",
+      "delaware",
+      "dunes",
+      "atlantic coast"
+    ],
+    "lat": 38.793,
+    "lng": -75.088,
+    "stateCode": "DE",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "il-001",
+    "title": "Starved Rock — St. Louis Canyon",
+    "creator": "Explore Travels",
+    "youtubeId": "4shZ0wMTPaM",
+    "duration": "35 min",
+    "difficulty": "Moderate",
+    "distance": "2.5 miles",
+    "tags": [
+      "hiking",
+      "starved rock",
+      "illinois",
+      "waterfall",
+      "canyon"
+    ],
+    "lat": 41.321,
+    "lng": -88.992,
+    "stateCode": "IL",
+    "categories": [
+      "canyons",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "ia-001",
+    "title": "Effigy Mounds — Fire Point Loop",
+    "creator": "Park Travel Review",
+    "youtubeId": "ZqT1uwzGPqA",
+    "duration": "40 min",
+    "difficulty": "Moderate",
+    "distance": "2 miles",
+    "tags": [
+      "hiking",
+      "effigy mounds",
+      "iowa",
+      "mississippi river",
+      "native american"
+    ],
+    "lat": 43.095,
+    "lng": -91.186,
+    "stateCode": "IA",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "ks-001",
+    "title": "Konza Prairie Nature Trail — Flint Hills",
+    "creator": "Park Travel Review",
+    "youtubeId": "WKOibhkl3xE",
+    "duration": "32 min",
+    "difficulty": "Moderate",
+    "distance": "2.6 miles",
+    "tags": [
+      "hiking",
+      "konza prairie",
+      "kansas",
+      "tallgrass",
+      "flint hills"
+    ],
+    "lat": 39.088,
+    "lng": -96.593,
+    "stateCode": "KS",
+    "categories": [
+      "desert"
+    ]
+  },
+  {
+    "id": "la-001",
+    "title": "Backbone Trail — Kisatchie Hills Wilderness",
+    "creator": "Louisiana Hikes",
+    "youtubeId": "qckF8JyiDzU",
+    "duration": "48 min",
+    "difficulty": "Hard",
+    "distance": "7.5 miles",
+    "tags": [
+      "backpacking",
+      "kisatchie",
+      "louisiana",
+      "wilderness",
+      "sandstone"
+    ],
+    "lat": 31.45,
+    "lng": -92.95,
+    "stateCode": "LA",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "ma-001",
+    "title": "Mount Greylock — Highest Peak in Massachusetts",
+    "creator": "Trail Wanderer",
+    "youtubeId": "pVYp7mUCh8k",
+    "duration": "38 min",
+    "difficulty": "Hard",
+    "distance": "6 miles",
+    "tags": [
+      "hiking",
+      "mount greylock",
+      "massachusetts",
+      "berkshires",
+      "summit"
+    ],
+    "lat": 42.637,
+    "lng": -73.166,
+    "stateCode": "MA",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "md-001",
+    "title": "Billy Goat Trail — Great Falls Section A",
+    "creator": "Trail Wanderer",
+    "youtubeId": "b2ikCoi5Ans",
+    "duration": "45 min",
+    "difficulty": "Hard",
+    "distance": "1.7 miles",
+    "tags": [
+      "hiking",
+      "billy goat trail",
+      "maryland",
+      "potomac",
+      "scrambling"
+    ],
+    "lat": 38.983,
+    "lng": -77.25,
+    "stateCode": "MD",
+    "categories": [
+      "canyons",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "ms-001",
+    "title": "Natchez Trace — Sunken Trace",
+    "creator": "Roam Your Home",
+    "youtubeId": "cwUT7YDIYeg",
+    "duration": "12 min",
+    "difficulty": "Easy",
+    "distance": "0.5 miles",
+    "tags": [
+      "hiking",
+      "natchez trace",
+      "mississippi",
+      "historic trail",
+      "sunken trace"
+    ],
+    "lat": 31.96,
+    "lng": -90.878,
+    "stateCode": "MS",
+    "categories": [
+      "lush-green"
+    ]
+  },
+  {
+    "id": "ne-001",
+    "title": "Scotts Bluff — Saddle Rock Trail",
+    "creator": "This is Nebraska",
+    "youtubeId": "8LxkWARMVfE",
+    "duration": "28 min",
+    "difficulty": "Moderate",
+    "distance": "1.6 miles",
+    "tags": [
+      "hiking",
+      "scotts bluff",
+      "nebraska",
+      "bluffs",
+      "great plains"
+    ],
+    "lat": 41.834,
+    "lng": -103.707,
+    "stateCode": "NE",
+    "categories": [
+      "desert",
+      "mountains"
+    ]
+  },
+  {
+    "id": "nj-001",
+    "title": "Mount Tammany — Delaware Water Gap",
+    "creator": "Backpacking Adventures",
+    "youtubeId": "pwj9AvPG7aM",
+    "duration": "55 min",
+    "difficulty": "Hard",
+    "distance": "3.5 miles",
+    "tags": [
+      "hiking",
+      "mount tammany",
+      "new jersey",
+      "appalachian trail",
+      "water gap"
+    ],
+    "lat": 40.967,
+    "lng": -75.113,
+    "stateCode": "NJ",
+    "categories": [
+      "mountains",
+      "lush-green"
+    ]
+  },
+  {
+    "id": "nd-001",
+    "title": "Theodore Roosevelt National Park — Badlands Loop",
+    "creator": "Explore Travels",
+    "youtubeId": "oD5IMWSZRBU",
+    "duration": "50 min",
+    "difficulty": "Moderate",
+    "distance": "4 miles",
+    "tags": [
+      "hiking",
+      "theodore roosevelt",
+      "north dakota",
+      "badlands",
+      "bison"
+    ],
+    "lat": 46.979,
+    "lng": -103.539,
+    "stateCode": "ND",
+    "categories": [
+      "desert",
+      "canyons"
+    ]
+  },
+  {
+    "id": "ri-001",
+    "title": "Newport Cliff Walk — Ocean Path",
+    "creator": "Trail Wanderer",
+    "youtubeId": "2p2WIFLpwoc",
+    "duration": "35 min",
+    "difficulty": "Easy",
+    "distance": "3.5 miles",
+    "tags": [
+      "hiking",
+      "cliff walk",
+      "newport",
+      "rhode island",
+      "ocean views"
+    ],
+    "lat": 41.35,
+    "lng": -71.066,
+    "stateCode": "RI",
+    "categories": [
+      "lush-green"
+    ]
+  }
+]
