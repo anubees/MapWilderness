@@ -758,14 +758,18 @@ export class MapWildernessMap {
 
     const videoItems = place.videos.map(video => {
       const isSelected = video.id === this.selectedId;
+      const safeTitle = this.escapeHtml(video.title);
       return `
-        <button type="button" class="map-popup-video${isSelected ? ' is-selected' : ''}" data-popup-video-id="${video.id}">
-          <img class="map-popup-video-thumb" src="${video.thumbnail}" alt="" loading="eager">
-          <span class="map-popup-video-info">
-            <strong>${this.escapeHtml(video.title)}</strong>
-            <span>${this.escapeHtml(video.creator)} · ${this.escapeHtml(video.duration)} · ${this.escapeHtml(video.difficulty)}</span>
-          </span>
-        </button>`;
+        <div class="map-popup-video-row${isSelected ? ' is-selected' : ''}">
+          <button type="button" class="map-popup-video" data-popup-video-id="${video.id}">
+            <img class="map-popup-video-thumb" src="${video.thumbnail}" alt="" loading="eager">
+            <span class="map-popup-video-info">
+              <strong>${safeTitle}</strong>
+              <span>${this.escapeHtml(video.creator)} · ${this.escapeHtml(video.duration)} · ${this.escapeHtml(video.difficulty)}</span>
+            </span>
+          </button>
+          <button type="button" class="map-popup-watch map-popup-watch-row" data-popup-video-id="${video.id}" aria-label="Watch ${safeTitle}">Watch</button>
+        </div>`;
     }).join('');
 
     return `

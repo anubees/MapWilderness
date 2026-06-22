@@ -2063,15 +2063,36 @@ button:focus-visible,
   overflow-y: auto;
 }
 
+.map-popup-video-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.4rem;
+  padding-right: 0.55rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.map-popup-video-row:last-child {
+  border-bottom: 0;
+}
+
+.map-popup-video-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.map-popup-video-row.is-selected {
+  background: rgba(82, 213, 147, 0.12);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
 .map-popup-video {
   display: grid;
   grid-template-columns: 3.5rem 1fr;
   gap: 0.55rem;
   align-items: center;
-  width: 100%;
-  padding: 0.55rem 0.75rem;
+  min-width: 0;
+  padding: 0.55rem 0 0.55rem 0.75rem;
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   background: transparent;
   color: inherit;
   text-align: left;
@@ -2079,17 +2100,8 @@ button:focus-visible,
   transition: background 150ms;
 }
 
-.map-popup-video:last-child {
-  border-bottom: 0;
-}
-
 .map-popup-video:hover {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.map-popup-video.is-selected {
-  background: rgba(82, 213, 147, 0.12);
-  box-shadow: inset 3px 0 0 var(--accent);
+  background: transparent;
 }
 
 .map-popup-video-thumb {
@@ -2127,6 +2139,20 @@ button:focus-visible,
   font-size: 0.78rem;
   font-weight: 800;
   cursor: pointer;
+}
+
+.map-popup-watch-row {
+  margin-top: 0;
+  width: auto;
+  min-height: 2rem;
+  padding: 0.45rem 0.7rem;
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.map-popup-watch-row:hover {
+  background: #6dffc6;
 }
 
 .mapwilderness-popup-wide .leaflet-popup-content-wrapper {
