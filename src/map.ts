@@ -35,8 +35,24 @@ interface LeafletCircle {
 
 interface LeafletMap {
   remove(): void;
-  fitBounds(bounds: unknown, options?: { padding?: [number, number]; maxZoom?: number }): void;
+  fitBounds(bounds: unknown, options?: {
+    padding?: [number, number];
+    paddingTopLeft?: [number, number];
+    paddingBottomRight?: [number, number];
+    maxZoom?: number;
+    animate?: boolean;
+    duration?: number;
+  }): void;
+  flyToBounds(bounds: unknown, options?: {
+    padding?: [number, number];
+    paddingTopLeft?: [number, number];
+    paddingBottomRight?: [number, number];
+    maxZoom?: number;
+    duration?: number;
+  }): void;
   flyTo(latlng: [number, number], zoom: number, options?: { duration?: number }): void;
+  getBounds(): { contains(latlng: [number, number]): boolean };
+  getZoom(): number;
   invalidateSize(): void;
   once(event: string, handler: () => void): void;
   on(event: string, handler: () => void): void;
@@ -126,6 +142,8 @@ export class MapWildernessMap {
   private userLatLng: [number, number] | null = null;
   private popupHandler: ((e: Event) => void) | null = null;
   private statesLoading = false;
+  /** Last state the map was framed to — avoids refitting on filter-only updates. */
+  private framedStateCode: string | null = null;
 
   /** Create or update the map on first mount; subsequent calls sync markers and selection. */
   mount(
@@ -237,9 +255,16 @@ export class MapWildernessMap {
     if (selectedId) {
       this.highlightSelected(selectedId, false, false);
     } else if (selectedState) {
-      this.flyToState(selectedState, false);
-    } else if (!this.userLatLng) {
-      this.fitToVideos(videos);
+      if (this.framedStateCode !== selectedState) {
+        this.flyToState(selectedState);
+      } else {
+        this.focusVideosIfNeeded(videos);
+      }
+    } else {
+      this.framedStateCode = null;
+      if (!this.userLatLng) {
+        this.fitToVideos(videos);
+      }
     }
 
     this.openPopupIfSinglePlace(videos);
@@ -385,6 +410,7 @@ export class MapWildernessMap {
     this.map = null;
     this.container = null;
     this.userLatLng = null;
+    this.framedStateCode = null;
     this.onStateSelect = null;
   }
 
@@ -441,13 +467,44 @@ export class MapWildernessMap {
     const code = this.areaCodeFromFeature(name);
     const hasWilderness = code ? this.stateCodesWithWilderness.has(code) : false;
     const selected = code === this.selectedState;
+    const filteredOut = Boolean(this.selectedState && code && code !== this.selectedState);
+
+    if (selected) {
+      return {
+        fillColor: '#52d593',
+        fillOpacity: 0.38,
+        color: '#52d593',
+        weight: 2.5,
+        interactive: hasWilderness
+      };
+    }
+
+    if (filteredOut || !hasWilderness) {
+      return {
+        fillColor: '#152028',
+        fillOpacity: filteredOut ? 0.03 : 0.04,
+        color: '#1e2d36',
+        weight: 1,
+        interactive: hasWilderness
+      };
+    }
+
+    if (!this.selectedState) {
+      return {
+        fillColor: '#68d8ff',
+        fillOpacity: 0.2,
+        color: '#3d6878',
+        weight: 1,
+        interactive: true
+      };
+    }
 
     return {
-      fillColor: selected ? '#52d593' : hasWilderness ? '#68d8ff' : '#152028',
-      fillOpacity: selected ? 0.38 : hasWilderness ? 0.2 : 0.04,
-      color: selected ? '#52d593' : hasWilderness ? '#3d6878' : '#1e2d36',
-      weight: selected ? 2.5 : 1,
-      interactive: hasWilderness
+      fillColor: '#2a4550',
+      fillOpacity: 0.22,
+      color: '#3d6878',
+      weight: 1,
+      interactive: true
     };
   }
 
@@ -456,15 +513,11 @@ export class MapWildernessMap {
     this.stateLayers.forEach((layer, code) => {
       if (!this.stateCodesWithWilderness.has(code)) return;
       layer.on('click', () => {
-        const next = this.selectedState === code ? null : code;
-        this.selectedState = next;
+        if (this.selectedState === code) return;
+        this.selectedState = code;
         this.refreshStateStyles();
-        this.onStateSelect?.(next);
-        if (next) {
-          this.flyToState(next);
-        } else if (this.currentVideos.length > 0) {
-          this.fitToVideos(this.currentVideos);
-        }
+        this.onStateSelect?.(code);
+        this.flyToState(code);
       });
     });
   }
@@ -480,16 +533,50 @@ export class MapWildernessMap {
     });
   }
 
-  /** Pans/zooms the map to fit a state boundary. */
-  private flyToState(stateCode: string, animate = true): void {
+  /** Pans/zooms the map so the selected state fills the viewport. */
+  private flyToState(stateCode: string): void {
     const layer = this.stateLayers.get(stateCode);
     if (!layer || !this.map) return;
-    const bounds = layer.getBounds();
-    if (animate) {
-      this.map.fitBounds(bounds, { padding: [40, 40], maxZoom: 7 });
+    this.animateToBounds(layer.getBounds());
+    this.framedStateCode = stateCode;
+  }
+
+  /** Animated bounds fit with consistent padding (state + in-state results). */
+  private animateToBounds(bounds: unknown): void {
+    if (!this.map) return;
+    const options = {
+      paddingTopLeft: [12, 12] as [number, number],
+      paddingBottomRight: [52, 12] as [number, number],
+      maxZoom: 10,
+      duration: 0.9
+    };
+    if (typeof this.map.flyToBounds === 'function') {
+      this.map.flyToBounds(bounds, options);
     } else {
-      this.map.fitBounds(bounds, { padding: [40, 40], maxZoom: 7 });
+      this.map.fitBounds(bounds, { ...options, animate: true });
     }
+  }
+
+  /** True when every filtered place marker lies inside the current map view. */
+  private areAllPlacesInView(videos: VideoWithRegion[]): boolean {
+    if (!this.map || videos.length === 0) return true;
+    const view = this.map.getBounds();
+    return groupByPlace(videos).every(place => view.contains([place.lat, place.lng]));
+  }
+
+  /** Pans/zooms to filtered markers when they fall outside the viewport (e.g. category change). */
+  private focusVideosIfNeeded(videos: VideoWithRegion[]): void {
+    if (!this.map || videos.length === 0 || this.areAllPlacesInView(videos)) return;
+
+    const places = groupByPlace(videos);
+    if (places.length === 1) {
+      const targetZoom = Math.min(Math.max(this.map.getZoom(), 8), 10);
+      this.map.flyTo([places[0].lat, places[0].lng], targetZoom, { duration: 0.9 });
+      return;
+    }
+
+    const points: [number, number][] = places.map(p => [p.lat, p.lng]);
+    this.animateToBounds(L.latLngBounds(points) as [number, number][]);
   }
 
   /** Finds the closest filtered video to a lat/lng. */

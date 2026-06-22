@@ -3,6 +3,7 @@
  * Category ids come from videos.catalog.json → categories[]; colors drive map markers.
  */
 import catalog from './videos.catalog.json';
+import preferredCatalog from './preferred.videos.catalog.json';
 import { CuratedVideoEntry } from './types';
 
 export interface WildernessCategory {
@@ -48,11 +49,20 @@ export const WILDERNESS_CATEGORIES: WildernessCategory[] = [
     name: 'Canyons',
     description: 'Deep gorges, rim hikes, and canyon country',
     color: '#ff8fab'
+  },
+  {
+    id: 'glaciers',
+    name: 'Glaciers',
+    description: 'Icefields, glacial lakes, and alpine glacier wilderness',
+    color: '#5ec4a8'
   }
 ];
 
 const VIDEO_CATEGORY_MAP: Record<string, string[]> = Object.fromEntries(
-  (catalog as CuratedVideoEntry[]).map(entry => [entry.id, entry.categories])
+  [...(catalog as CuratedVideoEntry[]), ...(preferredCatalog as CuratedVideoEntry[])].map(entry => [
+    entry.id,
+    entry.categories
+  ])
 );
 
 /** Returns the wilderness category definition for an id. */

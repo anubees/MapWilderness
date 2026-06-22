@@ -1,150 +1,101 @@
 /**
-
- * Query helpers over the enriched catalog.
-
+ * Query helpers over the enriched catalogs.
  * Filtering, search, and area-code lookups used by the map and carousel.
-
  */
-
 import { getVideoAreaLabel } from './geo/area-labels';
-import { getEnrichedCatalog, type VideoWithCategory } from './catalog';
-import { sortByPreferred } from './catalog/loader';
+import {
+  getEnrichedAllVideos,
+  getEnrichedCatalog,
+  getEnrichedPreferredCatalog,
+  type VideoWithCategory
+} from './catalog';
 import { getCategory, getCategoryColor, WILDERNESS_CATEGORIES } from './categories';
-
-
 
 export type { VideoWithCategory };
 
-
-
-/** Looks up one enriched catalog video by id. */
-
-export function findVideoById(videoId: string): VideoWithCategory | undefined {
-
-  return getEnrichedCatalog().find(v => v.id === videoId);
-
+export interface FilteredVideoSets {
+  preferred: VideoWithCategory[];
+  curated: VideoWithCategory[];
 }
 
-
-
-/** Applies search, category, state, difficulty, and favorites filters; results are preference-sorted. */
-
-export function filterVideos(options: {
-
+type FilterOptions = {
   query?: string;
-
   categoryId?: string | null;
-
   stateCode?: string | null;
-
   difficulty?: string;
-
   favoritesOnly?: boolean;
-
   favoriteIds?: string[];
+};
 
-}): VideoWithCategory[] {
-
+/** Applies shared filter options to one catalog list. */
+function applyFilters(videos: VideoWithCategory[], options: FilterOptions): VideoWithCategory[] {
   const lower = (options.query ?? '').toLowerCase().trim();
-
-  let results = getEnrichedCatalog();
-
-
+  let results = videos;
 
   if (options.categoryId) {
-
-    results = results.filter(v => v.categoryIds.includes(options.categoryId!));
-
+    results = results.filter(v => v.category === options.categoryId);
   }
-
-
 
   if (options.favoritesOnly && options.favoriteIds) {
-
     results = results.filter(v => options.favoriteIds!.includes(v.id));
-
   }
-
-
 
   if (options.difficulty && options.difficulty !== 'all') {
-
     results = results.filter(v => v.difficulty.toLowerCase() === options.difficulty);
-
   }
-
-
 
   if (options.stateCode) {
-
     results = results.filter(v => v.stateCode === options.stateCode);
-
   }
-
-
 
   if (lower) {
-
     results = results.filter(v => {
-
       const areaName = getVideoAreaLabel(v.regionId, v.stateCode).toLowerCase();
-
       return (
-
         v.title.toLowerCase().includes(lower) ||
-
         v.creator.toLowerCase().includes(lower) ||
-
         v.categoryName.toLowerCase().includes(lower) ||
-
         v.categoryIds.some(id => getCategory(id)?.name.toLowerCase().includes(lower)) ||
-
         v.stateCode.toLowerCase().includes(lower) ||
-
         areaName.includes(lower) ||
-
         v.tags.some(tag => tag.includes(lower)) ||
-
         v.difficulty.toLowerCase().includes(lower)
-
       );
-
     });
-
   }
 
-
-
-  return sortByPreferred(results);
-
+  return results;
 }
 
+/** Filters preferred and curated catalogs separately; curated excludes preferred ids. */
+export function filterVideoSets(options: FilterOptions): FilteredVideoSets {
+  const preferred = applyFilters(getEnrichedPreferredCatalog(), options);
+  const preferredIds = new Set(preferred.map(v => v.id));
+  const curated = applyFilters(getEnrichedCatalog(), options).filter(v => !preferredIds.has(v.id));
+  return { preferred, curated };
+}
 
+/** Preferred videos first, then curated (for map markers and combined lists). */
+export function filterVideos(options: FilterOptions): VideoWithCategory[] {
+  const { preferred, curated } = filterVideoSets(options);
+  return [...preferred, ...curated];
+}
 
-/** Returns the full enriched catalog with no filters applied. */
+/** Looks up one enriched video by id (preferred catalog first). */
+export function findVideoById(videoId: string): VideoWithCategory | undefined {
+  return getEnrichedAllVideos().find(v => v.id === videoId);
+}
 
+/** Returns the full combined catalog with no filters applied. */
 export function getAllVideos(): VideoWithCategory[] {
-
   return filterVideos({});
-
 }
-
-
 
 export { WILDERNESS_CATEGORIES, getCategoryColor };
 
-
-
-/** State/area codes that have at least one catalog video (US phase: state codes). */
-
-export function getStateCodesWithWilderness(): Set<string> {
-
+/** State/area codes present in a video list (respects active filters). */
+export function getStateCodesFromVideos(videos: VideoWithCategory[]): Set<string> {
   const codes = new Set<string>();
-
-  getAllVideos().forEach(v => codes.add(v.stateCode));
-
+  videos.forEach(v => codes.add(v.stateCode));
   return codes;
-
 }
-
-

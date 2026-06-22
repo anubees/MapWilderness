@@ -84,7 +84,7 @@ function applyThemeTokens(tokens: ThemeTokens): void {
   });
 }
 
-/** Activates a theme by index and updates the header toggle label. */
+/** Activates a theme by index and updates the header label. */
 function applyTheme(index: number): void {
   const definition = APP_THEME_DEFINITIONS[index];
   const theme = APP_THEMES[index];
@@ -94,25 +94,37 @@ function applyTheme(index: number): void {
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', theme.themeColor);
 
-  const button = document.getElementById('themeToggle');
-  if (button) {
-    button.textContent = `${theme.name} · ${index + 1}/${THEME_COUNT}`;
-    button.setAttribute('title', `Preview theme: ${theme.name}. Click for next.`);
-    button.setAttribute(
+  const label = document.getElementById('themeLabel');
+  if (label) {
+    label.textContent = `${theme.name} · ${index + 1}/${THEME_COUNT}`;
+  }
+
+  const switcher = document.querySelector('.theme-switcher');
+  if (switcher) {
+    switcher.setAttribute(
       'aria-label',
-      `Current theme ${theme.name}, ${index + 1} of ${THEME_COUNT}. Activate to try the next theme.`
+      `Preview theme: ${theme.name}, ${index + 1} of ${THEME_COUNT}`
     );
   }
 }
 
-/** Bootstraps the theme from storage and wires the header cycle button. */
+/** Bootstraps the theme from storage and wires prev/next controls. */
 export function initThemeSwitcher(): void {
   let index = themeIndex(readStoredThemeId());
-  applyTheme(index);
 
-  document.getElementById('themeToggle')?.addEventListener('click', () => {
-    index = (index + 1) % APP_THEMES.length;
+  const setTheme = (nextIndex: number): void => {
+    index = (nextIndex + APP_THEMES.length) % APP_THEMES.length;
     localStorage.setItem(STORAGE_KEY, APP_THEMES[index].id);
     applyTheme(index);
+  };
+
+  applyTheme(index);
+
+  document.getElementById('themePrev')?.addEventListener('click', () => {
+    setTheme(index - 1);
+  });
+
+  document.getElementById('themeNext')?.addEventListener('click', () => {
+    setTheme(index + 1);
   });
 }

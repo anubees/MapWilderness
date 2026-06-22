@@ -6,7 +6,8 @@ Built with TypeScript, esbuild, and zero runtime dependencies.
 
 ## Features
 
-- **81 curated videos** across all 50 US states
+- **347 curated videos** across all 50 US states (plus a separate **preferred** catalog for featured picks)
+- **7 wilderness categories** — lush green, mountains, red rock, desert, caves, canyons, and glaciers
 - **Interactive map** — click states, explore wilderness markers, watch in-app
 - **Real YouTube links** to wilderness hiking and backpacking content
 - **Offline-first** — app shell cached via service worker
@@ -42,7 +43,8 @@ src/
 ├── data.ts             # Catalog filter/search layer
 ├── catalog/            # Video catalog loader
 ├── geo/                # Map regions (US today; extensible)
-├── videos.catalog.json # Wilderness video source of truth
+├── videos.catalog.json           # Main curated wilderness list
+├── preferred.videos.catalog.json # Featured picks (shown first; empty by default)
 ├── types.ts            # TypeScript interfaces
 ├── service-worker.ts   # Cache strategy
 ├── index.html

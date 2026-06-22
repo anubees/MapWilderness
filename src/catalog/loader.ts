@@ -1,7 +1,7 @@
 import { CuratedVideoEntry, WildernessVideo } from '../types';
 import { getCategory, getCategoryIdsForVideo } from '../categories';
-import { PREFERRED_VIDEO_IDS } from '../curated.config';
 import catalog from '../videos.catalog.json';
+import preferredCatalog from '../preferred.videos.catalog.json';
 
 const DEFAULT_REGION_ID = 'us';
 
@@ -38,37 +38,36 @@ export type VideoWithCategory = WildernessVideo & {
   categoryIds: string[];
   category: string;
   categoryName: string;
+  /** True when the row comes from preferred.videos.catalog.json. */
+  isPreferred: boolean;
 };
 
 /** Catalog is loaded once at build time; enrichVideo adds resolved category metadata. */
-export function enrichVideo(video: WildernessVideo): VideoWithCategory {
+export function enrichVideo(video: WildernessVideo, isPreferred = false): VideoWithCategory {
   const categoryIds = getCategoryIdsForVideo(video.id);
   const category = categoryIds[0];
   const categoryName = getCategory(category)?.name ?? category;
-  return { ...video, categoryIds, category, categoryName };
+  return { ...video, categoryIds, category, categoryName, isPreferred };
 }
 
-/** Puts PREFERRED_VIDEO_IDS first; unmatched videos keep catalog order. */
-export function sortByPreferred(videos: VideoWithCategory[]): VideoWithCategory[] {
-  if (PREFERRED_VIDEO_IDS.length === 0) return videos;
+const curatedNormalized = (catalog as CuratedVideoEntry[]).map(normalizeCatalogEntry);
+const preferredNormalized = (preferredCatalog as CuratedVideoEntry[]).map(normalizeCatalogEntry);
 
-  const rank = new Map(PREFERRED_VIDEO_IDS.map((id, index) => [id, index]));
-  return videos
-    .map((video, index) => ({ video, index }))
-    .sort((a, b) => {
-      const rankA = rank.get(a.video.id);
-      const rankB = rank.get(b.video.id);
-      if (rankA !== undefined && rankB !== undefined) return rankA - rankB;
-      if (rankA !== undefined) return -1;
-      if (rankB !== undefined) return 1;
-      return a.index - b.index;
-    })
-    .map(({ video }) => video);
-}
+const enrichedCurated = curatedNormalized.map(v => enrichVideo(v, false));
+const enrichedPreferred = preferredNormalized.map(v => enrichVideo(v, true));
 
-const normalized = (catalog as CuratedVideoEntry[]).map(normalizeCatalogEntry);
-
-/** Returns catalog videos with resolved category metadata. */
+/** Main curated catalog with category metadata. */
 export function getEnrichedCatalog(): VideoWithCategory[] {
-  return normalized.map(enrichVideo);
+  return enrichedCurated;
+}
+
+/** Preferred curated catalog (featured picks, shown first in the carousel). */
+export function getEnrichedPreferredCatalog(): VideoWithCategory[] {
+  return enrichedPreferred;
+}
+
+/** Combined lookup pool (preferred first, then curated; no duplicate ids). */
+export function getEnrichedAllVideos(): VideoWithCategory[] {
+  const preferredIds = new Set(enrichedPreferred.map(v => v.id));
+  return [...enrichedPreferred, ...enrichedCurated.filter(v => !preferredIds.has(v.id))];
 }

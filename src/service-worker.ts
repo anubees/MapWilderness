@@ -6,7 +6,7 @@
  *
  * Bump CACHE_NAME when static assets change so clients drop stale caches on activate.
  */
-const CACHE_NAME = 'mapwilderness-v3';
+const CACHE_NAME = 'mapwilderness-v8';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

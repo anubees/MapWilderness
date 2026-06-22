@@ -2,7 +2,7 @@
  * Main UI shell — explore map + carousel, watch view, and saved wilderness.
  * Persists filters, favorites, and recents to localStorage.
  */
-import { WILDERNESS_CATEGORIES, filterVideos, findVideoById, getCategoryColor, getStateCodesWithWilderness, VideoWithCategory } from './data';
+import { WILDERNESS_CATEGORIES, filterVideoSets, findVideoById, getCategoryColor, getStateCodesFromVideos, VideoWithCategory } from './data';
 import { formatDistance, MapWildernessMap } from './map';
 import { getPlaceForVideo, groupByPlace } from './places';
 import { getVideoAreaLabel } from './geo/area-labels';
@@ -31,8 +31,8 @@ export class UIRenderer {
     this.app = appElement;
     this.state = {
       activeView: (savedFilters.activeView as AppView) ?? 'explore',
-      currentCategory: savedFilters.currentCategory ?? null,
-      selectedState: savedFilters.selectedState ?? null,
+      currentCategory: null,
+      selectedState: null,
       searchQuery: savedFilters.searchQuery ?? '',
       difficultyFilter: savedFilters.difficultyFilter ?? 'all',
       favoritesOnly: savedFilters.favoritesOnly ?? false,
@@ -58,9 +58,9 @@ export class UIRenderer {
     });
   }
 
-  /** Returns catalog videos matching current UI filter state. */
-  private getFilteredVideos(): VideoWithRegion[] {
-    return filterVideos({
+  /** Returns preferred and curated video sets matching current UI filter state. */
+  private getFilteredVideoSets(): { preferred: VideoWithRegion[]; curated: VideoWithRegion[] } {
+    return filterVideoSets({
       query: this.state.searchQuery,
       categoryId: this.state.currentCategory,
       stateCode: this.state.selectedState,
@@ -68,6 +68,12 @@ export class UIRenderer {
       favoritesOnly: this.state.favoritesOnly,
       favoriteIds: this.state.favorites
     });
+  }
+
+  /** Combined filtered list (preferred first) for map markers and lookups. */
+  private getFilteredVideos(): VideoWithRegion[] {
+    const { preferred, curated } = this.getFilteredVideoSets();
+    return [...preferred, ...curated];
   }
 
   /** Returns the enriched video for selectedVideoId, if any. */
@@ -126,7 +132,7 @@ export class UIRenderer {
       this.getFilteredVideos(),
       this.state.selectedVideoId,
       this.state.selectedState,
-      getStateCodesWithWilderness(),
+      getStateCodesFromVideos(this.getFilteredVideos()),
       (videoId, watch) => this.selectVideo(videoId, {
         highlightMap: true,
         flyToMap: false,
@@ -147,7 +153,8 @@ export class UIRenderer {
 
   /** HTML for the explore view (map, carousel, filters). */
   private getTemplate(): string {
-    const filtered = this.getFilteredVideos();
+    const { preferred, curated } = this.getFilteredVideoSets();
+    const filtered = [...preferred, ...curated];
     const selected = this.getSelectedVideo();
 
     return `
@@ -176,39 +183,49 @@ export class UIRenderer {
           </div>
 
           <div class="explore-layout">
-            <div class="map-wrap map-wrap-full">
-              <div class="map-stage">
-                <div id="mapwilderness-map" class="map-panel" role="application" aria-label="Map Wilderness map"></div>
-                <div class="map-vignette" aria-hidden="true"></div>
-                <div class="map-controls">
-                  <button type="button" id="locateMeButton" class="map-control-btn" aria-label="Find my location">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-                      <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <div class="explore-map-viewport">
+              <div class="map-wrap map-wrap-full">
+                <div class="map-stage">
+                  <div id="mapwilderness-map" class="map-panel" role="application" aria-label="Map Wilderness map"></div>
+                  <div class="map-vignette" aria-hidden="true"></div>
+                  <div class="map-controls">
+                    <button type="button" id="locateMeButton" class="map-control-btn" aria-label="Find my location">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="map-control-label">My location</span>
+                    </button>
+                    <button type="button" id="fitWildernessButton" class="map-control-btn" aria-label="Show all wilderness on map">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M4 9V4h5M15 4h5v5M4 15v5h5M15 20h5v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="map-control-label">Fit wilderness</span>
+                    </button>
+                  </div>
+                  <div class="map-controls-br">
+                    <button type="button" id="mapMaximizeButton" class="map-control-btn map-maximize-btn" aria-label="Maximize map" aria-pressed="false">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                      <span class="visually-hidden">Expand map</span>
+                    </button>
+                  </div>
+                  <a href="#wildernessResults" class="map-scroll-hint">
+                    <span>Scroll for videos</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <span class="map-control-label">My location</span>
-                  </button>
-                  <button type="button" id="fitWildernessButton" class="map-control-btn" aria-label="Show all wilderness on map">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M4 9V4h5M15 4h5v5M4 15v5h5M15 20h5v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <span class="map-control-label">Fit wilderness</span>
-                  </button>
+                  </a>
+                  <div id="mapToast" class="map-toast" role="status" aria-live="polite" hidden></div>
                 </div>
-                <div class="map-controls-br">
-                  <button type="button" id="mapMaximizeButton" class="map-control-btn map-maximize-btn" aria-label="Maximize map" aria-pressed="false">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <span class="visually-hidden">Expand map</span>
-                  </button>
+                <div class="map-legend-dock">
+                  ${this.buildMapLegend()}
                 </div>
-                <div id="mapToast" class="map-toast" role="status" aria-live="polite" hidden></div>
               </div>
-              ${this.buildMapLegend()}
             </div>
 
-            <section class="wilderness-carousel-section" aria-labelledby="wildernessCarouselTitle">
+            <section id="wildernessResults" class="wilderness-carousel-section" aria-labelledby="wildernessCarouselTitle">
               <div class="carousel-header">
                 <div>
                   <h2 id="wildernessCarouselTitle">Wilderness videos</h2>
@@ -224,7 +241,7 @@ export class UIRenderer {
                 </div>
               </div>
               <div id="wildernessCarousel" class="wilderness-carousel-stack">
-                ${this.buildWildernessCarousel(filtered)}
+                ${this.buildWildernessCarousel(preferred, curated)}
               </div>
             </section>
           </div>
@@ -296,7 +313,7 @@ export class UIRenderer {
 
     const regionColor = getCategoryColor(selected.category);
     const isFavorite = this.state.favorites.includes(selected.id);
-    const place = getPlaceForVideo(selected.id);
+    const place = getPlaceForVideo(selected.id, this.getFilteredVideos());
     const difficultyClass = selected.difficulty.toLowerCase();
 
     return `
@@ -378,44 +395,65 @@ export class UIRenderer {
   private buildMapLegend(): string {
     return `
       <div class="map-legend" role="group" aria-label="Wilderness category legend and filters">
-        <span class="map-legend-title">Legend</span>
-        <div class="map-legend-items">
-          <button type="button" class="map-legend-btn ${!this.state.currentCategory ? 'active' : ''}" data-category="">
-            <span class="map-legend-dot map-legend-dot-all" aria-hidden="true"></span>
-            All wilderness
-          </button>
-          ${WILDERNESS_CATEGORIES.map(c => `
-            <button type="button" class="map-legend-btn ${this.state.currentCategory === c.id ? 'active' : ''}"
-              data-category="${c.id}" style="--legend-color:${c.color}">
-              <span class="map-legend-dot" style="background:${c.color}" aria-hidden="true"></span>
-              ${this.escapeHtml(c.name)}
+        <div class="map-legend-row">
+          <span class="map-legend-title">Legend</span>
+          <div class="map-legend-items">
+            <button type="button" class="map-legend-btn ${!this.state.currentCategory ? 'active' : ''}" data-category="">
+              <span class="map-legend-dot map-legend-dot-all" aria-hidden="true"></span>
+              All wilderness
             </button>
-          `).join('')}
+            ${WILDERNESS_CATEGORIES.map(c => `
+              <button type="button" class="map-legend-btn ${this.state.currentCategory === c.id ? 'active' : ''}"
+                data-category="${c.id}" style="--legend-color:${c.color}">
+                <span class="map-legend-dot" style="background:${c.color}" aria-hidden="true"></span>
+                ${this.escapeHtml(c.name)}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+        <div class="map-legend-state-row">
+          <span class="map-legend-title">States</span>
+          <div class="map-legend-items">
+            <button type="button" class="map-legend-btn map-state-btn ${!this.state.selectedState ? 'active' : ''}" data-state="">
+              All states
+            </button>
+          </div>
         </div>
       </div>`;
   }
 
-  /** HTML for category-grouped horizontal video carousel. */
-  private buildWildernessCarousel(videos: VideoWithRegion[]): string {
-    if (videos.length === 0) {
+  /** HTML for preferred picks plus category-grouped carousel rows. */
+  private buildWildernessCarousel(preferred: VideoWithRegion[], curated: VideoWithRegion[]): string {
+    const all = [...preferred, ...curated];
+    if (all.length === 0) {
       return '<div class="carousel-empty"><strong>No wilderness match</strong><p>Try another category or search term.</p></div>';
     }
 
     const placeSizes = new Map<string, number>();
-    for (const v of videos) {
+    for (const v of all) {
       placeSizes.set(v.placeId, (placeSizes.get(v.placeId) ?? 0) + 1);
     }
+
+    const preferredBlock = preferred.length > 0
+      ? `
+        <section class="carousel-region-block carousel-preferred-block" aria-label="Featured wilderness">
+          <div class="carousel-region-label">
+            <span class="carousel-region-dot carousel-region-dot-featured" aria-hidden="true"></span>
+            <h3>Featured wilderness</h3>
+            <span class="carousel-region-count">${preferred.length}</span>
+          </div>
+          <div class="wilderness-carousel-row" role="list">
+            ${preferred.map(v => this.buildCarouselCard(v, placeSizes.get(v.placeId)!, all)).join('')}
+          </div>
+        </section>`
+      : '';
 
     const categoriesToShow = this.state.currentCategory
       ? WILDERNESS_CATEGORIES.filter(c => c.id === this.state.currentCategory)
       : WILDERNESS_CATEGORIES;
 
-    return categoriesToShow.map(category => {
-      const categoryVideos = videos.filter(v =>
-        this.state.currentCategory
-          ? v.categoryIds.includes(category.id)
-          : v.category === category.id
-      );
+    const curatedBlocks = categoriesToShow.map(category => {
+      const categoryVideos = curated.filter(v => v.category === category.id);
       if (categoryVideos.length === 0) return '';
 
       return `
@@ -426,18 +464,20 @@ export class UIRenderer {
             <span class="carousel-region-count">${categoryVideos.length}</span>
           </div>
           <div class="wilderness-carousel-row" role="list">
-            ${categoryVideos.map(v => this.buildCarouselCard(v, placeSizes.get(v.placeId)!)).join('')}
+            ${categoryVideos.map(v => this.buildCarouselCard(v, placeSizes.get(v.placeId)!, all)).join('')}
           </div>
         </section>`;
     }).join('');
+
+    return preferredBlock + curatedBlocks;
   }
 
   /** HTML for one carousel video card button. */
-  private buildCarouselCard(video: VideoWithRegion, placeVideoCount: number): string {
+  private buildCarouselCard(video: VideoWithRegion, placeVideoCount: number, videos: VideoWithRegion[]): string {
     const isSelected = this.state.selectedVideoId === video.id;
     const isFavorite = this.state.favorites.includes(video.id);
     const regionColor = getCategoryColor(video.category);
-    const place = getPlaceForVideo(video.id);
+    const place = getPlaceForVideo(video.id, videos);
     const placeLabel = placeVideoCount > 1 && place
       ? `${place.name} · ${place.videos.findIndex(v => v.id === video.id) + 1}/${placeVideoCount}`
       : '';
@@ -464,7 +504,8 @@ export class UIRenderer {
   private buildPlaceSwitcher(selected: VideoWithRegion | undefined): string {
     if (!selected) return '';
 
-    const place = getPlaceForVideo(selected.id);
+    const filtered = this.getFilteredVideos();
+    const place = getPlaceForVideo(selected.id, filtered);
     if (!place || place.videos.length <= 1) return '';
 
     return `
@@ -706,26 +747,31 @@ export class UIRenderer {
     this.state.selectedState = stateCode;
     this.persistFilters();
     this.updateStateFilterUi();
-    this.updateExploreContent();
+    this.updateExploreContent({ fitMap: stateCode === null });
   }
 
-  /** Updates carousel subtitle when a state filter is active. */
+  /** Updates carousel subtitle and state filter button when a state filter is active. */
   private updateStateFilterUi(): void {
     const subtitle = document.querySelector('.carousel-subtitle');
-    if (!subtitle) return;
-
-    subtitle.querySelector('.carousel-state-note')?.remove();
-    if (this.state.selectedState) {
-      const note = document.createElement('span');
-      note.className = 'carousel-state-note';
-      note.textContent = `in ${getVideoAreaLabel('us', this.state.selectedState)}`;
-      subtitle.appendChild(note);
+    if (subtitle) {
+      subtitle.querySelector('.carousel-state-note')?.remove();
+      if (this.state.selectedState) {
+        const note = document.createElement('span');
+        note.className = 'carousel-state-note';
+        note.textContent = `in ${getVideoAreaLabel('us', this.state.selectedState)}`;
+        subtitle.appendChild(note);
+      }
     }
+
+    document.querySelectorAll('.map-state-btn').forEach(btn => {
+      btn.classList.toggle('active', !this.state.selectedState);
+    });
   }
 
   /** Refreshes carousel, counts, and map for current filters. */
   private updateExploreContent(options: { fitMap?: boolean; scrollCarousel?: boolean } = {}): void {
-    const filtered = this.getFilteredVideos();
+    const { preferred, curated } = this.getFilteredVideoSets();
+    const filtered = [...preferred, ...curated];
 
     if (this.state.selectedVideoId && !filtered.some(v => v.id === this.state.selectedVideoId)) {
       this.state.selectedVideoId = null;
@@ -737,10 +783,10 @@ export class UIRenderer {
     const carousel = document.getElementById('wildernessCarousel');
     const count = document.getElementById('resultCount');
     const placeCount = document.getElementById('placeCount');
-    if (carousel) carousel.innerHTML = this.buildWildernessCarousel(filtered);
+    if (carousel) carousel.innerHTML = this.buildWildernessCarousel(preferred, curated);
     if (count) count.textContent = String(filtered.length);
     if (placeCount) placeCount.textContent = String(groupByPlace(filtered).length);
-    this.mapWilderness.sync(filtered, this.state.selectedVideoId, this.state.selectedState, getStateCodesWithWilderness());
+    this.mapWilderness.sync(filtered, this.state.selectedVideoId, this.state.selectedState, getStateCodesFromVideos(filtered));
     this.attachCarouselHandlers();
     if (options.scrollCarousel !== false) {
       this.scrollCarouselToSelected();
@@ -953,15 +999,20 @@ export class UIRenderer {
     document.querySelectorAll('.map-legend-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
+        const stateCode = (btn as HTMLElement).dataset.state;
+        if (stateCode !== undefined) {
+          this.selectState(null);
+          (btn as HTMLButtonElement).blur();
+          return;
+        }
+
         const category = (btn as HTMLElement).dataset.category ?? '';
         this.state.currentCategory = category || null;
-        this.state.selectedState = null;
         this.persistFilters();
-        document.querySelectorAll('.map-legend-btn').forEach(b => {
+        document.querySelectorAll('.map-legend-btn[data-category]').forEach(b => {
           b.classList.toggle('active', b === btn);
         });
-        this.updateStateFilterUi();
-        this.updateExploreContent({ fitMap: true, scrollCarousel: false });
+        this.updateExploreContent({ scrollCarousel: false });
         (btn as HTMLButtonElement).blur();
       });
     });

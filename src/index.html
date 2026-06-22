@@ -57,9 +57,11 @@
                 <span class="brand-name">Map Wilderness</span>
             </a>
             <p class="header-tagline">Discover wilderness on the map · watch in-app</p>
-            <button type="button" id="themeToggle" class="theme-toggle-btn" aria-label="Cycle preview theme">
-                Forest Night · 1/30
-            </button>
+            <div class="theme-switcher" role="group" aria-label="Preview theme">
+                <button type="button" id="themePrev" class="theme-step-btn" aria-label="Previous theme">‹</button>
+                <span id="themeLabel" class="theme-toggle-label" aria-live="polite">Forest Night · 1/30</span>
+                <button type="button" id="themeNext" class="theme-step-btn" aria-label="Next theme">›</button>
+            </div>
         </div>
     </header>
 

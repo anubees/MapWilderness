@@ -16,18 +16,21 @@
 }
 
 @media (max-width: 640px) {
-  .theme-toggle-btn {
-    padding: 0.4rem 0.65rem;
-    font-size: 0.68rem;
+  .theme-step-btn {
+    width: 1.75rem;
+    min-height: 1.85rem;
+    font-size: 0.9rem;
   }
 
-  .theme-toggle-btn::before {
-    display: none;
+  .theme-toggle-label {
+    min-height: 1.85rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.68rem;
   }
 }
 
 @media (max-width: 900px) {
-  .theme-toggle-btn {
+  .theme-switcher {
     margin-left: auto;
   }
 }

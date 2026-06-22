@@ -1,0 +1,134 @@
+[
+  {
+    "id": "mt-008",
+    "title": "Grinnell Glacier — Glacier National Park",
+    "creator": "Family Vlog",
+    "youtubeId": "P8ysLRIcp2E",
+    "duration": "45 min",
+    "difficulty": "Hard",
+    "distance": "10.5 miles",
+    "tags": [
+      "hiking",
+      "grinnell glacier",
+      "many glacier",
+      "montana"
+    ],
+    "lat": 48.753,
+    "lng": -113.727,
+    "stateCode": "MT",
+    "categories": [
+      "glaciers",
+      "mountains"
+    ]
+  },
+  {
+    "id": "wa-008",
+    "title": "Nisqually Vista — Mount Rainier Glacier Views",
+    "creator": "Wandering Out Yonder",
+    "youtubeId": "OUSzBGGc_GI",
+    "duration": "12 min",
+    "difficulty": "Easy",
+    "distance": "1.2 miles",
+    "tags": [
+      "hiking",
+      "nisqually glacier",
+      "mount rainier",
+      "paradise"
+    ],
+    "lat": 46.785,
+    "lng": -121.735,
+    "stateCode": "WA",
+    "categories": [
+      "glaciers",
+      "mountains"
+    ]
+  },
+  {
+    "id": "ca-007",
+    "title": "Dana Glacier — Mount Dana Wilderness",
+    "creator": "KQED Climate Watch",
+    "youtubeId": "80Zxixd5IHc",
+    "duration": "6 min",
+    "difficulty": "Hard",
+    "distance": "6 miles",
+    "tags": [
+      "hiking",
+      "dana glacier",
+      "yosemite",
+      "sierra nevada"
+    ],
+    "lat": 37.9,
+    "lng": -119.218,
+    "stateCode": "CA",
+    "categories": [
+      "glaciers",
+      "mountains"
+    ]
+  },
+  {
+    "id": "wy-008",
+    "title": "Wind River High Route — Alpine Glaciers",
+    "creator": "Brendan Yeager",
+    "youtubeId": "D6Nr90fJ2JM",
+    "duration": "4 min",
+    "difficulty": "Hard",
+    "distance": "80 miles",
+    "tags": [
+      "backpacking",
+      "wind river",
+      "glacier",
+      "wyoming"
+    ],
+    "lat": 43.184,
+    "lng": -109.653,
+    "stateCode": "WY",
+    "categories": [
+      "glaciers",
+      "mountains"
+    ]
+  },
+  {
+    "id": "ak-008",
+    "title": "Root Glacier — Wrangell-St. Elias",
+    "creator": "The Wildly Life",
+    "youtubeId": "b0Ct746tXGw",
+    "duration": "21 min",
+    "difficulty": "Moderate",
+    "distance": "4 miles",
+    "tags": [
+      "hiking",
+      "root glacier",
+      "kennecott",
+      "alaska"
+    ],
+    "lat": 61.487,
+    "lng": -142.891,
+    "stateCode": "AK",
+    "categories": [
+      "glaciers",
+      "mountains"
+    ]
+  },
+  {
+    "id": "co-013",
+    "title": "St. Mary's Glacier — Idaho Springs",
+    "creator": "EXITING THE EARTH",
+    "youtubeId": "PDaSmLf05hs",
+    "duration": "23 min",
+    "difficulty": "Moderate",
+    "distance": "1.6 miles",
+    "tags": [
+      "hiking",
+      "st marys glacier",
+      "colorado",
+      "idaho springs"
+    ],
+    "lat": 39.842,
+    "lng": -105.648,
+    "stateCode": "CO",
+    "categories": [
+      "glaciers",
+      "mountains"
+    ]
+  }
+]

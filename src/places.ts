@@ -84,10 +84,14 @@ export function groupByPlace(videos: VideoWithCategory[]): PlaceGroup[] {
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-/** Returns the place group containing a given video id. */
-export function getPlaceForVideo(videoId: string): PlaceGroup | undefined {
-  const video = findVideoById(videoId);
+/** Returns the place group containing a given video id within an optional video pool. */
+export function getPlaceForVideo(
+  videoId: string,
+  videos: VideoWithCategory[] = getAllVideos()
+): PlaceGroup | undefined {
+  const video = videos.find(v => v.id === videoId) ?? findVideoById(videoId);
   if (!video) return undefined;
-  const atPlace = getAllVideos().filter(v => v.placeId === video.placeId);
+  const atPlace = videos.filter(v => v.placeId === video.placeId);
+  if (atPlace.length === 0) return undefined;
   return buildPlaceGroup(atPlace);
 }

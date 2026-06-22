@@ -1,8 +1,6 @@
 /**
- * Catalog settings (not individual videos).
+ * Catalog datasets (edit the JSON files directly).
  *
- *   videos.catalog.json  — wilderness list, coordinates, YouTube ids
- *   PREFERRED_VIDEO_IDS  — carousel sort priority (empty = catalog order)
+ *   videos.catalog.json           — main curated wilderness list
+ *   preferred.videos.catalog.json — featured picks shown before the main catalog (empty by default)
  */
-
-export const PREFERRED_VIDEO_IDS: string[] = [];
