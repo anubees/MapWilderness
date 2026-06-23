@@ -2,13 +2,20 @@
  * Main UI shell — explore map + carousel, watch view, and saved wilderness.
  * Persists filters, favorites, and recents to localStorage.
  */
-import { WILDERNESS_CATEGORIES, filterVideoSets, findVideoById, getCategoryColor, getStateCodesFromVideos, VideoWithCategory } from './data';
+import { WILDERNESS_CATEGORIES, filterVideoSets, findVideoById, getAllVideos, getCategoryColor, getStateCodesFromVideos, VideoWithCategory } from './data';
 import { formatDistance, MapWildernessMap } from './map';
 import { getPlaceForVideo, groupByPlace } from './places';
 import { getVideoAreaLabel } from './geo/area-labels';
 import { AppState, AppView } from './types';
 
 type VideoWithRegion = VideoWithCategory;
+
+const DIFFICULTY_FILTERS = [
+  { id: 'all', label: 'Any', dotClass: 'map-legend-dot-all' },
+  { id: 'easy', label: 'Easy', dotClass: 'map-legend-dot-easy' },
+  { id: 'moderate', label: 'Moderate', dotClass: 'map-legend-dot-moderate' },
+  { id: 'hard', label: 'Hard', dotClass: 'map-legend-dot-hard' }
+] as const;
 
 /** localStorage keys for user data that survives reloads. */
 const STORAGE_KEYS = {
@@ -20,7 +27,6 @@ const STORAGE_KEYS = {
 export class UIRenderer {
   private app: HTMLElement;
   private state: AppState;
-  private searchDebounce: ReturnType<typeof setTimeout> | null = null;
   private toastTimer = 0;
   private mapMaximized = false;
   private mapWilderness = new MapWildernessMap();
@@ -33,9 +39,8 @@ export class UIRenderer {
       activeView: (savedFilters.activeView as AppView) ?? 'explore',
       currentCategory: null,
       selectedState: null,
-      searchQuery: savedFilters.searchQuery ?? '',
+      showAllStates: false,
       difficultyFilter: savedFilters.difficultyFilter ?? 'all',
-      favoritesOnly: savedFilters.favoritesOnly ?? false,
       favorites: JSON.parse(localStorage.getItem(STORAGE_KEYS.favorites) ?? '[]') as string[],
       recentVideos: JSON.parse(localStorage.getItem(STORAGE_KEYS.recent) ?? '[]') as string[],
       selectedVideoId: savedFilters.selectedVideoId ?? null,
@@ -58,15 +63,26 @@ export class UIRenderer {
     });
   }
 
+  /** True before the user picks a state or chooses all states — map stays empty with a hint. */
+  private isDiscoveryMode(): boolean {
+    return !this.state.selectedState && !this.state.showAllStates;
+  }
+
+  /** State codes that have at least one catalog video (for clickable states in discovery mode). */
+  private getInteractiveStateCodes(): Set<string> {
+    return getStateCodesFromVideos(getAllVideos());
+  }
+
   /** Returns preferred and curated video sets matching current UI filter state. */
   private getFilteredVideoSets(): { preferred: VideoWithRegion[]; curated: VideoWithRegion[] } {
+    if (this.isDiscoveryMode()) {
+      return { preferred: [], curated: [] };
+    }
+
     return filterVideoSets({
-      query: this.state.searchQuery,
       categoryId: this.state.currentCategory,
       stateCode: this.state.selectedState,
-      difficulty: this.state.difficultyFilter,
-      favoritesOnly: this.state.favoritesOnly,
-      favoriteIds: this.state.favorites
+      difficulty: this.state.difficultyFilter
     });
   }
 
@@ -87,9 +103,7 @@ export class UIRenderer {
       activeView: this.state.activeView,
       currentCategory: this.state.currentCategory,
       selectedState: this.state.selectedState,
-      searchQuery: this.state.searchQuery,
       difficultyFilter: this.state.difficultyFilter,
-      favoritesOnly: this.state.favoritesOnly,
       selectedVideoId: this.state.selectedVideoId
     }));
   }
@@ -113,6 +127,7 @@ export class UIRenderer {
     this.setView(this.state.activeView, false);
     requestAnimationFrame(() => {
       this.mapWilderness.invalidateSize();
+      window.setTimeout(() => this.mapWilderness.invalidateSize(), 150);
       this.scrollCarouselToSelected();
     });
   }
@@ -132,14 +147,17 @@ export class UIRenderer {
       this.getFilteredVideos(),
       this.state.selectedVideoId,
       this.state.selectedState,
-      getStateCodesFromVideos(this.getFilteredVideos()),
+      this.isDiscoveryMode() ? new Set() : getStateCodesFromVideos(this.getFilteredVideos()),
+      this.isDiscoveryMode(),
+      this.getInteractiveStateCodes(),
       (videoId, watch) => this.selectVideo(videoId, {
         highlightMap: true,
         flyToMap: false,
         startPlayback: watch,
         switchToWatch: watch
       }),
-      (stateCode) => this.selectState(stateCode)
+      (stateCode) => this.selectState(stateCode),
+      () => this.toggleMapMaximize()
     );
   }
 
@@ -160,34 +178,15 @@ export class UIRenderer {
     return `
       <main class="app-main">
         <section id="view-explore" class="view-panel${this.state.activeView === 'explore' ? ' active' : ''}" aria-label="Explore wilderness">
-          <div class="explore-toolbar">
-            <div class="toolbar-filters">
-              <label class="search-field compact-search">
-                <span class="visually-hidden">Search wilderness</span>
-                <input id="search-input" type="search" placeholder="Search wilderness, tags, creators…" value="${this.escapeHtml(this.state.searchQuery)}" autocomplete="off">
-              </label>
-              <label class="compact-select">
-                <span class="visually-hidden">Difficulty</span>
-                <select id="difficulty-filter">
-                  <option value="all" ${this.state.difficultyFilter === 'all' ? 'selected' : ''}>Any difficulty</option>
-                  <option value="easy" ${this.state.difficultyFilter === 'easy' ? 'selected' : ''}>Easy</option>
-                  <option value="moderate" ${this.state.difficultyFilter === 'moderate' ? 'selected' : ''}>Moderate</option>
-                  <option value="hard" ${this.state.difficultyFilter === 'hard' ? 'selected' : ''}>Hard</option>
-                </select>
-              </label>
-              <label class="toggle-field compact-toggle">
-                <input id="favorites-filter" type="checkbox" ${this.state.favoritesOnly ? 'checked' : ''}>
-                <span>★ Saved</span>
-              </label>
-            </div>
-          </div>
-
           <div class="explore-layout">
             <div class="explore-map-viewport">
               <div class="map-wrap map-wrap-full">
                 <div class="map-stage">
                   <div id="mapwilderness-map" class="map-panel" role="application" aria-label="Map Wilderness map"></div>
                   <div class="map-vignette" aria-hidden="true"></div>
+                  <div id="mapDiscoverHint" class="map-discover-banner" role="status"${this.isDiscoveryMode() ? '' : ' hidden'}>
+                    <span class="map-discover-banner-text">Click a state on the map to discover wilderness</span>
+                  </div>
                   <div class="map-controls">
                     <button type="button" id="locateMeButton" class="map-control-btn" aria-label="Find my location">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -202,48 +201,47 @@ export class UIRenderer {
                       </svg>
                       <span class="map-control-label">Fit wilderness</span>
                     </button>
-                  </div>
-                  <div class="map-controls-br">
-                    <button type="button" id="mapMaximizeButton" class="map-control-btn map-maximize-btn" aria-label="Maximize map" aria-pressed="false">
+                    <button type="button" id="mapMaximizeButton" class="map-control-btn map-expand-btn" aria-label="Expand map" aria-pressed="false">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                       </svg>
-                      <span class="visually-hidden">Expand map</span>
+                      <span class="map-control-label">Expand</span>
                     </button>
                   </div>
-                  <a href="#wildernessResults" class="map-scroll-hint">
-                    <span>Scroll for videos</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
                   <div id="mapToast" class="map-toast" role="status" aria-live="polite" hidden></div>
                 </div>
                 <div class="map-legend-dock">
                   ${this.buildMapLegend()}
                 </div>
               </div>
-            </div>
 
-            <section id="wildernessResults" class="wilderness-carousel-section" aria-labelledby="wildernessCarouselTitle">
-              <div class="carousel-header">
-                <div>
-                  <h2 id="wildernessCarouselTitle">Wilderness videos</h2>
-                  <p class="carousel-subtitle">
-                    <span id="resultCount" aria-live="polite">${filtered.length}</span> videos
-                    · <span id="placeCount">${groupByPlace(filtered).length}</span> places
-                    ${this.state.selectedState ? `<span class="carousel-state-note">in ${this.escapeHtml(getVideoAreaLabel('us', this.state.selectedState))}</span>` : ''}
-                  </p>
+              <a id="videosScrollCue" class="videos-scroll-cue" href="#wildernessCarousel"${this.isDiscoveryMode() ? ' hidden' : ''}>
+                <span>Scroll down for wilderness videos</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+
+              <section id="wildernessResults" class="wilderness-carousel-section"${this.isDiscoveryMode() ? ' hidden' : ''} aria-labelledby="wildernessCarouselTitle">
+                <div class="carousel-header">
+                  <div>
+                    <h2 id="wildernessCarouselTitle">Wilderness videos</h2>
+                    <p class="carousel-subtitle">
+                      <span id="resultCount" aria-live="polite">${filtered.length}</span> videos
+                      · <span id="placeCount">${groupByPlace(filtered).length}</span> places
+                      ${this.state.selectedState ? `<span class="carousel-state-note"> · in ${this.escapeHtml(getVideoAreaLabel('us', this.state.selectedState))}</span>` : ''}
+                    </p>
+                  </div>
+                  <div class="carousel-nav-buttons">
+                    <button type="button" id="carouselPrev" class="carousel-nav-btn" aria-label="Scroll videos left">‹</button>
+                    <button type="button" id="carouselNext" class="carousel-nav-btn" aria-label="Scroll videos right">›</button>
+                  </div>
                 </div>
-                <div class="carousel-nav-buttons">
-                  <button type="button" id="carouselPrev" class="carousel-nav-btn" aria-label="Scroll videos left">‹</button>
-                  <button type="button" id="carouselNext" class="carousel-nav-btn" aria-label="Scroll videos right">›</button>
+                <div id="wildernessCarousel" class="wilderness-carousel-stack">
+                  ${this.buildWildernessCarousel(preferred, curated)}
                 </div>
-              </div>
-              <div id="wildernessCarousel" class="wilderness-carousel-stack">
-                ${this.buildWildernessCarousel(preferred, curated)}
-              </div>
-            </section>
+              </section>
+            </div>
           </div>
         </section>
 
@@ -414,9 +412,21 @@ export class UIRenderer {
         <div class="map-legend-state-row">
           <span class="map-legend-title">States</span>
           <div class="map-legend-items">
-            <button type="button" class="map-legend-btn map-state-btn ${!this.state.selectedState ? 'active' : ''}" data-state="">
+            <button type="button" class="map-legend-btn map-state-btn ${this.state.showAllStates && !this.state.selectedState ? 'active' : ''}" data-state="">
               All states
             </button>
+          </div>
+        </div>
+        <div class="map-legend-difficulty-row">
+          <span class="map-legend-title">Difficulty</span>
+          <div class="map-legend-items">
+            ${DIFFICULTY_FILTERS.map(d => `
+              <button type="button" class="map-legend-btn map-difficulty-btn ${this.state.difficultyFilter === d.id ? 'active' : ''}"
+                data-difficulty="${d.id}">
+                <span class="map-legend-dot ${d.dotClass}" aria-hidden="true"></span>
+                ${d.label}
+              </button>
+            `).join('')}
           </div>
         </div>
       </div>`;
@@ -426,7 +436,7 @@ export class UIRenderer {
   private buildWildernessCarousel(preferred: VideoWithRegion[], curated: VideoWithRegion[]): string {
     const all = [...preferred, ...curated];
     if (all.length === 0) {
-      return '<div class="carousel-empty"><strong>No wilderness match</strong><p>Try another category or search term.</p></div>';
+      return '<div class="carousel-empty"><strong>No wilderness match</strong><p>Try another category or difficulty.</p></div>';
     }
 
     const placeSizes = new Map<string, number>();
@@ -743,29 +753,64 @@ export class UIRenderer {
   }
 
   /** Sets the map state filter and refreshes explore content. */
-  private selectState(stateCode: string | null): void {
+  private selectState(stateCode: string): void {
+    const wasDiscovering = this.isDiscoveryMode();
     this.state.selectedState = stateCode;
+    this.state.showAllStates = false;
     this.persistFilters();
     this.updateStateFilterUi();
-    this.updateExploreContent({ fitMap: stateCode === null });
+    this.updateExploreContent({ fitMap: false, scrollCarousel: !wasDiscovering });
   }
 
-  /** Updates carousel subtitle and state filter button when a state filter is active. */
-  private updateStateFilterUi(): void {
-    const subtitle = document.querySelector('.carousel-subtitle');
-    if (subtitle) {
-      subtitle.querySelector('.carousel-state-note')?.remove();
-      if (this.state.selectedState) {
-        const note = document.createElement('span');
-        note.className = 'carousel-state-note';
-        note.textContent = `in ${getVideoAreaLabel('us', this.state.selectedState)}`;
-        subtitle.appendChild(note);
-      }
-    }
+  /** Shows wilderness nationwide without picking a single state. */
+  private selectAllStates(): void {
+    const wasDiscovering = this.isDiscoveryMode();
+    this.state.selectedState = null;
+    this.state.showAllStates = true;
+    this.persistFilters();
+    this.updateStateFilterUi();
+    this.updateExploreContent({ fitMap: true, scrollCarousel: !wasDiscovering });
+  }
 
+  /** Updates active state on the “All states” legend control. */
+  private updateStateFilterUi(): void {
     document.querySelectorAll('.map-state-btn').forEach(btn => {
-      btn.classList.toggle('active', !this.state.selectedState);
+      btn.classList.toggle('active', this.state.showAllStates && !this.state.selectedState);
     });
+  }
+
+  /** Updates active styling on difficulty legend buttons. */
+  private updateDifficultyFilterUi(): void {
+    document.querySelectorAll('.map-difficulty-btn').forEach(btn => {
+      const id = (btn as HTMLElement).dataset.difficulty ?? 'all';
+      btn.classList.toggle('active', id === this.state.difficultyFilter);
+    });
+  }
+
+  /** Syncs discovery vs explore layout (banner, videos panel, scroll cue). */
+  private updateExploreLayoutMode(): void {
+    const discovering = this.isDiscoveryMode();
+    const hint = document.getElementById('mapDiscoverHint');
+    const panel = document.getElementById('wildernessResults');
+    const scrollCue = document.getElementById('videosScrollCue');
+    if (hint) hint.hidden = !discovering;
+    if (panel) panel.hidden = discovering;
+    if (scrollCue) scrollCue.hidden = discovering;
+    document.querySelector('.explore-layout')?.classList.toggle('explore-layout--discovering', discovering);
+  }
+
+  /** Refreshes carousel count line and optional state note. */
+  private updateCarouselHeader(filtered: VideoWithRegion[]): void {
+    const subtitle = document.querySelector('.carousel-subtitle');
+    if (!subtitle || this.isDiscoveryMode()) return;
+
+    const stateNote = this.state.selectedState
+      ? `<span class="carousel-state-note"> · in ${this.escapeHtml(getVideoAreaLabel('us', this.state.selectedState))}</span>`
+      : '';
+
+    subtitle.innerHTML = `
+      <span id="resultCount" aria-live="polite">${filtered.length}</span> videos
+      · <span id="placeCount">${groupByPlace(filtered).length}</span> places${stateNote}`;
   }
 
   /** Refreshes carousel, counts, and map for current filters. */
@@ -781,12 +826,17 @@ export class UIRenderer {
     }
 
     const carousel = document.getElementById('wildernessCarousel');
-    const count = document.getElementById('resultCount');
-    const placeCount = document.getElementById('placeCount');
+    this.updateExploreLayoutMode();
     if (carousel) carousel.innerHTML = this.buildWildernessCarousel(preferred, curated);
-    if (count) count.textContent = String(filtered.length);
-    if (placeCount) placeCount.textContent = String(groupByPlace(filtered).length);
-    this.mapWilderness.sync(filtered, this.state.selectedVideoId, this.state.selectedState, getStateCodesFromVideos(filtered));
+    this.updateCarouselHeader(filtered);
+    this.mapWilderness.sync(
+      filtered,
+      this.state.selectedVideoId,
+      this.state.selectedState,
+      this.isDiscoveryMode() ? new Set() : getStateCodesFromVideos(filtered),
+      this.isDiscoveryMode(),
+      this.getInteractiveStateCodes()
+    );
     this.attachCarouselHandlers();
     if (options.scrollCarousel !== false) {
       this.scrollCarouselToSelected();
@@ -794,6 +844,10 @@ export class UIRenderer {
     if (options.fitMap) {
       requestAnimationFrame(() => this.mapWilderness.fitAllWilderness());
     }
+    requestAnimationFrame(() => {
+      this.mapWilderness.invalidateSize();
+      window.setTimeout(() => this.mapWilderness.invalidateSize(), 120);
+    });
   }
 
   /** Shows or hides the offline badge in the header. */
@@ -900,12 +954,13 @@ export class UIRenderer {
     wrap.classList.toggle('map-maximized', this.mapMaximized);
     document.body.classList.toggle('map-is-maximized', this.mapMaximized);
 
+    const expandIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    const collapseIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 14h6v6M14 4h6v6M20 14v6h-6M10 4H4v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
     if (btn) {
       btn.setAttribute('aria-pressed', this.mapMaximized ? 'true' : 'false');
-      btn.setAttribute('aria-label', this.mapMaximized ? 'Exit expanded map' : 'Maximize map');
-      btn.innerHTML = this.mapMaximized
-        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 14h6v6M14 4h6v6M20 14v6h-6M10 4H4v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="visually-hidden">Close expanded map</span>`
-        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="visually-hidden">Expand map</span>`;
+      btn.setAttribute('aria-label', this.mapMaximized ? 'Exit expanded map' : 'Expand map');
+      btn.innerHTML = `${this.mapMaximized ? collapseIcon : expandIcon}<span class="map-control-label">${this.mapMaximized ? 'Close' : 'Expand'}</span>`;
     }
 
     requestAnimationFrame(() => this.mapWilderness.invalidateSize());
@@ -938,11 +993,10 @@ export class UIRenderer {
       this.state.recentVideos = [];
       this.state.selectedVideoId = null;
       this.state.playerStarted = false;
-      this.state.searchQuery = '';
       this.state.currentCategory = null;
       this.state.selectedState = null;
+      this.state.showAllStates = false;
       this.state.difficultyFilter = 'all';
-      this.state.favoritesOnly = false;
       this.state.activeView = 'explore';
       this.render();
     });
@@ -994,14 +1048,24 @@ export class UIRenderer {
     });
   }
 
-  /** Handlers for search, difficulty, favorites, and legend filters. */
+  /** Handlers for category, state, and difficulty legend filters. */
   private attachFilterHandlers(): void {
     document.querySelectorAll('.map-legend-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         const stateCode = (btn as HTMLElement).dataset.state;
         if (stateCode !== undefined) {
-          this.selectState(null);
+          this.selectAllStates();
+          (btn as HTMLButtonElement).blur();
+          return;
+        }
+
+        const difficulty = (btn as HTMLElement).dataset.difficulty;
+        if (difficulty !== undefined) {
+          this.state.difficultyFilter = difficulty;
+          this.persistFilters();
+          this.updateDifficultyFilterUi();
+          this.updateExploreContent({ scrollCarousel: false });
           (btn as HTMLButtonElement).blur();
           return;
         }
@@ -1015,26 +1079,6 @@ export class UIRenderer {
         this.updateExploreContent({ scrollCarousel: false });
         (btn as HTMLButtonElement).blur();
       });
-    });
-
-    const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
-    searchInput?.addEventListener('input', (e) => {
-      this.state.searchQuery = (e.target as HTMLInputElement).value;
-      this.persistFilters();
-      if (this.searchDebounce) clearTimeout(this.searchDebounce);
-      this.searchDebounce = setTimeout(() => this.updateExploreContent(), 200);
-    });
-
-    document.getElementById('difficulty-filter')?.addEventListener('change', (e) => {
-      this.state.difficultyFilter = (e.target as HTMLSelectElement).value;
-      this.persistFilters();
-      this.updateExploreContent();
-    });
-
-    document.getElementById('favorites-filter')?.addEventListener('change', (e) => {
-      this.state.favoritesOnly = (e.target as HTMLInputElement).checked;
-      this.persistFilters();
-      this.updateExploreContent();
     });
   }
 
@@ -1093,6 +1137,17 @@ export class UIRenderer {
 
     this.mapWilderness.locateUser()
       .then(result => {
+        if (result.stateCode) {
+          const stateLabel = getVideoAreaLabel('us', result.stateCode);
+          if (this.getInteractiveStateCodes().has(result.stateCode)) {
+            this.selectState(result.stateCode);
+            this.showMapToast(`Showing wilderness in ${stateLabel}`);
+            return;
+          }
+          this.showMapToast(`You're in ${stateLabel} — no wilderness videos here yet`);
+          return;
+        }
+
         if (result.nearestVideo && result.nearestDistanceKm !== undefined) {
           this.showMapToast(
             `Nearest: ${result.nearestVideo.title} · ${formatDistance(result.nearestDistanceKm)}`

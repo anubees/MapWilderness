@@ -11,6 +11,7 @@ export interface LocateResult {
   lat: number;
   lng: number;
   accuracy: number;
+  stateCode: string | null;
   nearestVideo?: VideoWithRegion;
   nearestDistanceKm?: number;
 }
@@ -69,7 +70,10 @@ interface GeoJsonLayer {
 }
 
 interface StatePathLayer {
-  feature?: { properties?: Record<string, string> };
+  feature?: {
+    properties?: Record<string, string>;
+    geometry?: { type?: string; coordinates?: unknown };
+  };
   setStyle(style: Record<string, unknown>): void;
   getBounds(): unknown;
   bindTooltip(content: string, options?: Record<string, unknown>): StatePathLayer;
@@ -115,6 +119,48 @@ function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): num
   return r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+/** Ray-casting point-in-polygon for one GeoJSON ring ([lng, lat] vertices). */
+function pointInRing(lat: number, lng: number, ring: number[][]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const xi = ring[i][0];
+    const yi = ring[i][1];
+    const xj = ring[j][0];
+    const yj = ring[j][1];
+    const intersects =
+      (yi > lat) !== (yj > lat) &&
+      lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi;
+    if (intersects) inside = !inside;
+  }
+  return inside;
+}
+
+/** True when a lat/lng lies inside a GeoJSON Polygon or MultiPolygon. */
+function pointInGeoJsonGeometry(
+  lat: number,
+  lng: number,
+  geometry?: { type?: string; coordinates?: unknown }
+): boolean {
+  if (!geometry?.type || !geometry.coordinates) return false;
+
+  /** Tests outer ring and subtracts polygon holes. */
+  const inPolygon = (rings: number[][][]): boolean => {
+    if (!rings.length || !pointInRing(lat, lng, rings[0])) return false;
+    for (let i = 1; i < rings.length; i++) {
+      if (pointInRing(lat, lng, rings[i])) return false;
+    }
+    return true;
+  };
+
+  if (geometry.type === 'Polygon') {
+    return inPolygon(geometry.coordinates as number[][][]);
+  }
+  if (geometry.type === 'MultiPolygon') {
+    return (geometry.coordinates as number[][][][]).some(inPolygon);
+  }
+  return false;
+}
+
 /** Formats kilometres as metres or miles for popup labels. */
 function formatDistance(km: number): string {
   if (km < 1) return `${Math.round(km * 1000)} m away`;
@@ -134,6 +180,8 @@ export class MapWildernessMap {
   private selectedId: string | null = null;
   private selectedState: string | null = null;
   private stateCodesWithWilderness = new Set<string>();
+  private discoveryMode = false;
+  private interactiveStateCodes = new Set<string>();
   private onSelect: ((videoId: string, watch: boolean) => void) | null = null;
   private onStateSelect: ((stateCode: string | null) => void) | null = null;
   private currentVideos: VideoWithRegion[] = [];
@@ -141,6 +189,7 @@ export class MapWildernessMap {
   private userAccuracy: LeafletCircle | null = null;
   private userLatLng: [number, number] | null = null;
   private popupHandler: ((e: Event) => void) | null = null;
+  private onExpandRequest: (() => void) | null = null;
   private statesLoading = false;
   /** Last state the map was framed to — avoids refitting on filter-only updates. */
   private framedStateCode: string | null = null;
@@ -152,15 +201,21 @@ export class MapWildernessMap {
     selectedId: string | null,
     selectedState: string | null,
     stateCodesWithWilderness: Set<string>,
+    discoveryMode: boolean,
+    interactiveStateCodes: Set<string>,
     onSelect: (videoId: string, watch: boolean) => void,
-    onStateSelect: (stateCode: string | null) => void
+    onStateSelect: (stateCode: string | null) => void,
+    onExpandRequest?: () => void
   ): void {
     this.container = container;
     this.onSelect = onSelect;
     this.onStateSelect = onStateSelect;
+    this.onExpandRequest = onExpandRequest ?? null;
     this.selectedId = selectedId;
     this.selectedState = selectedState;
     this.stateCodesWithWilderness = stateCodesWithWilderness;
+    this.discoveryMode = discoveryMode;
+    this.interactiveStateCodes = interactiveStateCodes;
     this.currentVideos = videos;
 
     if (!this.map) {
@@ -168,6 +223,7 @@ export class MapWildernessMap {
       this.map = L.map(container, {
         zoomControl: false,
         scrollWheelZoom: true,
+        doubleClickZoom: false,
         attributionControl: true,
         minZoom: 3,
         maxZoom: 14
@@ -220,6 +276,7 @@ export class MapWildernessMap {
 
       this.map.on('dragstart', () => this.closeAllPopups());
       this.map.on('zoomstart', () => this.closeAllPopups());
+      this.map.on('dblclick', () => this.onExpandRequest?.());
     }
 
     this.syncPlaceMarkers(videos);
@@ -228,13 +285,16 @@ export class MapWildernessMap {
       this.highlightSelected(selectedId, false, false);
     } else if (selectedState) {
       this.flyToState(selectedState);
-    } else if (videos.length > 0) {
+    } else if (!this.discoveryMode && videos.length > 0) {
       this.fitToVideos(videos);
     }
 
     this.openPopupIfSinglePlace(videos);
 
-    requestAnimationFrame(() => this.map?.invalidateSize());
+    requestAnimationFrame(() => {
+      this.map?.invalidateSize();
+      window.setTimeout(() => this.map?.invalidateSize(), 120);
+    });
   }
 
   /** Refresh markers and map framing after filters change without tearing down Leaflet. */
@@ -242,11 +302,15 @@ export class MapWildernessMap {
     videos: VideoWithRegion[],
     selectedId: string | null,
     selectedState: string | null = this.selectedState,
-    stateCodesWithWilderness: Set<string> = this.stateCodesWithWilderness
+    stateCodesWithWilderness: Set<string> = this.stateCodesWithWilderness,
+    discoveryMode: boolean = this.discoveryMode,
+    interactiveStateCodes: Set<string> = this.interactiveStateCodes
   ): void {
     this.selectedId = selectedId;
     this.selectedState = selectedState;
     this.stateCodesWithWilderness = stateCodesWithWilderness;
+    this.discoveryMode = discoveryMode;
+    this.interactiveStateCodes = interactiveStateCodes;
     this.currentVideos = videos;
     if (!this.map || !this.container) return;
     this.closeAllPopups();
@@ -262,7 +326,7 @@ export class MapWildernessMap {
       }
     } else {
       this.framedStateCode = null;
-      if (!this.userLatLng) {
+      if (!this.discoveryMode && !this.userLatLng) {
         this.fitToVideos(videos);
       }
     }
@@ -334,6 +398,14 @@ export class MapWildernessMap {
     this.fitToVideos(this.currentVideos);
   }
 
+  /** Returns the US state code containing a lat/lng, if boundaries are loaded. */
+  findStateCodeAt(lat: number, lng: number): string | null {
+    for (const [code, layer] of this.stateLayers) {
+      if (pointInGeoJsonGeometry(lat, lng, layer.feature?.geometry)) return code;
+    }
+    return null;
+  }
+
   /** Requests geolocation, shows user marker, and frames nearest wilderness. */
   locateUser(): Promise<LocateResult> {
     return new Promise((resolve, reject) => {
@@ -350,12 +422,13 @@ export class MapWildernessMap {
           this.userLatLng = [lat, lng];
           this.showUserLocation(lat, lng, accuracy);
 
+          const stateCode = this.findStateCodeAt(lat, lng);
           const nearest = this.findNearestVideo(lat, lng, this.currentVideos);
           const nearestDistanceKm = nearest
             ? distanceKm(lat, lng, nearest.lat, nearest.lng)
             : undefined;
 
-          if (this.map) {
+          if (this.map && !stateCode) {
             if (nearest && nearestDistanceKm !== undefined && nearestDistanceKm < 800) {
               this.map.fitBounds(
                 L.latLngBounds([[lat, lng], [nearest.lat, nearest.lng]]) as [number, number][],
@@ -370,6 +443,7 @@ export class MapWildernessMap {
             lat,
             lng,
             accuracy,
+            stateCode,
             nearestVideo: nearest,
             nearestDistanceKm
           });
@@ -412,6 +486,7 @@ export class MapWildernessMap {
     this.userLatLng = null;
     this.framedStateCode = null;
     this.onStateSelect = null;
+    this.onExpandRequest = null;
   }
 
   /** Fetches and renders the region GeoJSON boundary layer. */
@@ -466,8 +541,19 @@ export class MapWildernessMap {
     const name = this.featureName(feature);
     const code = this.areaCodeFromFeature(name);
     const hasWilderness = code ? this.stateCodesWithWilderness.has(code) : false;
+    const hasCatalog = code ? this.interactiveStateCodes.has(code) : false;
     const selected = code === this.selectedState;
     const filteredOut = Boolean(this.selectedState && code && code !== this.selectedState);
+
+    if (this.discoveryMode) {
+      return {
+        fillColor: '#1a2a33',
+        fillOpacity: hasCatalog ? 0.1 : 0.03,
+        color: '#2a3d48',
+        weight: 1,
+        interactive: hasCatalog
+      };
+    }
 
     if (selected) {
       return {
@@ -508,10 +594,10 @@ export class MapWildernessMap {
     };
   }
 
-  /** Attach click handlers after GeoJSON load (handlers depend on stateCodesWithWilderness). */
+  /** Attach click handlers after GeoJSON load (handlers depend on interactiveStateCodes). */
   private bindStateClickHandlers(): void {
     this.stateLayers.forEach((layer, code) => {
-      if (!this.stateCodesWithWilderness.has(code)) return;
+      if (!this.interactiveStateCodes.has(code)) return;
       layer.on('click', () => {
         if (this.selectedState === code) return;
         this.selectedState = code;

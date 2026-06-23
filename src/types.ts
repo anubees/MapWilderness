@@ -46,9 +46,8 @@ export interface AppState {
   activeView: AppView;
   currentCategory: string | null;
   selectedState: string | null;
-  searchQuery: string;
+  showAllStates: boolean;
   difficultyFilter: string;
-  favoritesOnly: boolean;
   favorites: string[];
   recentVideos: string[];
   selectedVideoId: string | null;
